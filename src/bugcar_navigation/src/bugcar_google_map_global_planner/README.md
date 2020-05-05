@@ -1,5 +1,4 @@
 # Bugcar's Google Map Global Planner PACKAGE
-[![Build Status](https://travis-ci.com/tranqkhue/bugcar_google_map_global_planner.svg?token=Lywx1Kzgk1pQDGSsYXzR&branch=master)](https://travis-ci.com/tranqkhue/bugcar_google_map_global_planner)
 ## How to use? 
 Add the whole folder into a ws, and catkin_make, add "source" into ~/.bashrc ;)
 ## What would I do if I had a bug?
