@@ -1,0 +1,12 @@
+<launch>
+
+        <!--  ************** Navigation ***************  -->
+	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
+	</node>
+
+	<node pkg="bugcar_google_map_global_planner" type="google_map_global_planner.py" respawn="false" name="google_map_global_planner" output="screen">
+	</node>
+
+	<include file="$(find robot_localization)/launch/bugcar_robot_localization.launch"/>
+
+</launch>
