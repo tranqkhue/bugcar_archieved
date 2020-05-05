@@ -1,4 +1,5 @@
 # Bugcar Workspace
+[![Build Status](https://travis-ci.com/tranqkhue/bugcar.svg?token=Lywx1Kzgk1pQDGSsYXzR&branch=master)](https://travis-ci.com/tranqkhue/bugcar)
 # About
 This repo is Bugcar Workspace, which includes the neccessary source codes and launch files for the Bugcar Autonomous Outdoor Rover
 # Importance
