@@ -1,8 +1,8 @@
 <launch>
 	
-	<!--============================================ -->
+	<!--=========================================== -->
 	<!-- Launch gazebo -->
-	<!--============================================ -->
+	<!--=========================================== -->
 
 	<arg name="model" default="$(find diff_drive)/urdf/02-diff_drive.urdf.xacro"/>
 	<arg name="rvizconfig" default="$(find diff_drive)/config/RvizConfig.rviz"/>
