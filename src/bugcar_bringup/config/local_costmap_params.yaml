@@ -17,11 +17,3 @@ local_costmap:
   inflation_layer:
     inflate_radius: 0.2
 
-  obstacle_layer:
-    enabled: True
-
-  observation_sources: scan
-  scan:
-    topic: /scan
-    marking: false
-    clearing: true
