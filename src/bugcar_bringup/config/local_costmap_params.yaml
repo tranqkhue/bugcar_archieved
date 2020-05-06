@@ -12,3 +12,16 @@ local_costmap:
   
   plugins:
    - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"}
+   - {name: inflation_layer,     type: "costmap_2d::InflationLayer"}
+
+  inflation_layer:
+    inflate_radius: 0.2
+
+  obstacle_layer:
+    enabled: True
+
+  observation_sources: scan
+  scan:
+    topic: /scan
+    marking: false
+    clearing: true
