@@ -14,9 +14,12 @@ local_costmap:
    - {name: obstacle_layer,      type: "costmap_2d::ObstacleLayer"}
    - {name: inflation_layer,         type: "costmap_2d::InflationLayer"}
 
-  inflate_layer:
+  inflation_layer:
     inflation_radius: 0.2
     cost_scaling_factor: 1.2
+
+  
+
 
 
 

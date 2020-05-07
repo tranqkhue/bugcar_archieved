@@ -17,7 +17,7 @@ map_topic = "map/free_local_occupancy_grid"
 OG_publisher = rospy.Publisher(map_topic, OccupancyGrid, queue_size=5, latch=True)
 
 MAP_RESOLUTION = 0.1    #Unit: Meter
-MAP_SIZE       = 10     #Unit: Meter, Shape: Square with center "base_link"
+MAP_SIZE       = 6     #Unit: Meter, Shape: Square with center "base_link"
 
 map_img = np.zeros([int(MAP_SIZE/MAP_RESOLUTION),int(MAP_SIZE/MAP_RESOLUTION),1], \
                     dtype=np.uint8)
