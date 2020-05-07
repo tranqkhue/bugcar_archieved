@@ -12,22 +12,12 @@ from geometry_msgs.msg import Pose
 from geometry_msgs.msg import Point
 from geometry_msgs.msg import Quaternion
 
-
-HEIGHT = 60
-WIDTH = 60
-RESOLUTION = 0.1
-
 class input_occ_grid:
 	def __init__(self):
-		self.costmap = 0
-		self.quaternion = Quaternion()
-		self.point = Point()
-		
+		self.costmap = 0		
 
 	def callback(self,data):
 		self.costmap = data.data
-		self.quaternion = data.info.origin.orientation
-		self.point = data.info.origin.position
 		
 class stacked_costmap:
 	def __init__(self):
@@ -42,8 +32,11 @@ class stacked_costmap:
 	def run(self,costmap_topic):
 		rospy.init_node("stacked_local_occupancy_grid")
 		pub = rospy.Publisher("map/stacked_local_occupancy_grid", OccupancyGrid, queue_size=5, latch=True)
+		
+		#Subscribe to odometry topic to get robot position
 		pose_sub = rospy.Subscriber("odometry/filtered_map_baselink", Odometry, self.pose_callback)
- 
+ 		
+		#Subscribe to OccupancyGrid topics
 		occ_grid = [None]*len(costmap_topic)
 		sub = [None]*len(costmap_topic)
 		for i in range(len(costmap_topic)):
@@ -52,16 +45,16 @@ class stacked_costmap:
 		
 		
 		rate = rospy.Rate(50)
+
 		while not rospy.is_shutdown():
-			map_img = np.zeros([HEIGHT,WIDTH,1], \
-					    dtype=np.uint8)
-			map_img = map_img.flatten()
-			map_img = map_img.tolist()
 			
+			#Stacking OccupancyGrids
+			occupancy_grid = [0]*(self.WIDTH*self.HEIGHT)			
 			for i in range(len(costmap_topic)):
-				map_img = np.add(map_img, occ_grid[i].costmap)
+				occupancy_grid = np.add(occupancy_grid, occ_grid[i].costmap)
 			
-			occupancy_grid = np.clip(map_img,0,100)
+			#Limit value 0 - 100 
+			occupancy_grid = np.clip(occupancy_grid,0,100)
 
 			map_msg = OccupancyGrid()
 
@@ -74,12 +67,17 @@ class stacked_costmap:
 			map_msg.info.height = self.HEIGHT      #Unit: Pixel
 			map_msg.info.width  = self.WIDTH      #Unit: Pixel
 			map_msg.info.resolution = self.RESOLUTION
-
+			
+			#Set new stacked occupancy grid to center at robot
 			map_msg.info.origin = Pose()
 			map_msg.info.origin.position = Point()
 			map_msg.info.origin.position.x = self.point.x - self.WIDTH*self.RESOLUTION/2      #Unit: Meter
 			map_msg.info.origin.position.y = self.point.y - self.HEIGHT*self.RESOLUTION/2      #Unit: Meter
 			map_msg.info.origin.position.z = 0
+
+			#Set orientation with respect to map
+			#Currently testing with costmap generated from /scan
+			#Orientation is set to be that of local_costmap (0,0,0,1)
 			map_msg.info.origin.orientation = Quaternion()
 			map_msg.info.origin.orientation.x = 0
 			map_msg.info.origin.orientation.y = 0
