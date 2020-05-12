@@ -1,5 +1,3 @@
 # rosserial
-
-[![Build Status](https://travis-ci.org/ros-drivers/rosserial.svg?branch=melodic-devel)](https://travis-ci.org/ros-drivers/rosserial)
-
+This is duplication and for backup of Bugcar Project
 Please see [rosserial on the ROS wiki](http://wiki.ros.org/rosserial) to get started.
