@@ -1,10 +1,5 @@
 # roboclaw_ros
-[![Build Status](https://travis-ci.org/sonyccd/roboclaw_ros.svg?branch=master)](https://travis-ci.org/sonyccd/roboclaw_ros)
-[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f65acd1242e4a0582ecb04c7cc70f68)](https://www.codacy.com/app/snakes-in-the-box/roboclaw_ros?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sonyccd/roboclaw_ros&amp;utm_campaign=Badge_Grade)
-
-This is the ROS driver for the Roboclaw motor controllers made by [Ion Motion Control](http://www.ionmc.com/).
-
-#HELP: I have been busy with another project that is not using robo claw. Message me if you want to become a contributor and help keep this thing alive!
+This is the duplication of the [bugs-fixed roboclaw_ros](https://github.com/gnuoyohes/roboclaw_ros)
 
 ## Before you begin
 Before you use this package you need to calibrate the velocity PID on the Roboclaw.  This will requare the
