@@ -1,0 +1,10 @@
+<launch>
+	<include file="$(find robot_localization)/launch/test_run_rc.launch" />
+	<include file="$(find ublox_gps)/launch/single_gps.launch" />
+	
+	<node pkg="rosserial_python" type="serial_node.py" name="rc_node" />
+	<node pkg="bno055_usb_stick" type="bno055_usb_stick_node" name="bno055_node" />
+	<node pkg="roboclaw_node" type="roboclaw_node.py" name="roboclaw_node" />		
+	
+
+</launch>
