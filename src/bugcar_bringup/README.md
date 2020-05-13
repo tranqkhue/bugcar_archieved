@@ -1,4 +1,4 @@
-#Assign fixed device to USB port
+# Assign fixed device to USB port
 
  - Get USB port currently being used by the device:
 	~$ dmesg | grep tty
