@@ -128,9 +128,9 @@ void UbloxNode::addProductInterface(std::string product_category,
 }
 
 void UbloxNode::getRosParams() {
-  nh->param("device", device_, std::string("/dev/ttyACM0"));
-  nh->param("frame_id", frame_id, std::string("gps"));
-  nh->param("velocity_frame_id", velocity_frame_id, std::string("gps"));
+  nh->param("device", device_, std::string("/dev/ttyUSB_gps"));
+  nh->param("frame_id", frame_id, std::string("base_link"));
+  nh->param("velocity_frame_id", velocity_frame_id, std::string("map"));
 
   // Save configuration parameters
   getRosUint("load/mask", load_.loadMask, 0);
@@ -159,8 +159,8 @@ void UbloxNode::getRosParams() {
     getRosUint("usb/tx_ready", usb_tx_, 0);
   }
   // Measurement rate params
-  nh->param("rate", rate_, 4.0);  // in Hz
-  getRosUint("nav_rate", nav_rate, 1);  // # of measurement rate cycles
+  nh->param("rate", rate_, 8.0);  // in Hz
+  getRosUint("nav_rate", nav_rate, 8);  // # of measurement rate cycles
   // RTCM params
   getRosUint("rtcm/ids", rtcm_ids);  // RTCM output message IDs
   getRosUint("rtcm/rates", rtcm_rates);  // RTCM output message rates

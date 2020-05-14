@@ -1,7 +1,7 @@
 ublox:
   debug: 2                    # Range 0-4 (0 means no debug statements will print)
 
-  device: /dev/ttyACM3
+  device: /dev/ttyACM2
   frame_id: base_link
   velocity_frame_id: map
   dynamic_model: pedestrian   # Velocity restricted to 0 m/s. Zero dynamics 

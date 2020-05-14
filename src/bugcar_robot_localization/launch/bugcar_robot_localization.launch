@@ -4,11 +4,11 @@
 	<!-- =========================================================== -->
 	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" clear_params="true">
 
-	    <!--  Placeholder for input topic remapping  -->
-	    <remap from="odometry/wheel" to="Diff_Drive/diff_drive_controller/odom"/>
-	    <remap from="imu/data" to="imu"/>
-	    <!--  Placeholder for output topic remapping  -->
-	    <remap from="odometry/filtered" to="odometry/filtered_odom_baselink"/>
+		<!--  Placeholder for input topic remapping  -->
+		<remap from="odometry/wheel" to="odom"/>
+		<remap from="imu/data" to="imu"/>
+		<!--  Placeholder for output topic remapping  -->
+		<remap from="odometry/filtered" to="odometry/filtered_odom_baselink"/>
 
 	</node>
 	<!-- =========================================================== -->
@@ -16,25 +16,26 @@
 	<!-- =========================================================== -->
 	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
 
-	<!-- Placeholders for input remapping  -->
-    	<remap from="odometry/filtered" to="odometry/filtered_map_baselink"/>
-    	<remap from="imu/data" to="imu"/>
-    	<remap from="gps/fix" to="fix"/>
-    	<!--  Placeholder for output topic remapping  -->
-    	<remap from="odometry/gps" to="odometry/gps_transformed_to_map"/>
+		<!-- Placeholders for input remapping  -->
+	    	<remap from="odometry/filtered" to="odometry/filtered_map_baselink"/>
+	    	<remap from="imu/data" to="imu"/>
+	    	<!--  Placeholder for output topic remapping  -->
+	    	<remap from="odometry/gps" to="odometry/gps_transformed_to_map"/>
 
-  	</node>
+ 	</node>
+  	
+
 	<!-- =========================================================== -->
 
 	<!-- =========================================================== -->
   	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params="true">
 
-	    <!--  Placeholder for input topic remapping  -->
-	    <remap from="odometry/wheel" to="odometry/filtered_odom_baselink"/>
-	    <remap from="odometry/gps" to="odometry/gps_transformed_to_map"/>
-	    <remap from="imu/data" to="imu"/>
-	    <!--  Placeholder for output topic remapping  -->
-	    <remap from="odometry/filtered" to="odometry/filtered_map_baselink"/>
+		<!--  Placeholder for input topic remapping  -->
+		<remap from="odometry/wheel" to="odom"/>
+		<remap from="odometry/gps" to="odometry/gps_transformed_to_map"/>
+		<remap from="imu/data" to="imu"/>
+		<!--  Placeholder for output topic remapping  -->
+		<remap from="odometry/filtered" to="odometry/filtered_map_baselink"/>
 
   	</node>
 	<!-- =========================================================== -->
