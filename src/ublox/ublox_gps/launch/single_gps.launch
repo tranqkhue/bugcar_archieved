@@ -18,7 +18,8 @@
       <rosparam command="load" 
         file="$(find ublox_gps)/config/$(arg param_file_name).yaml" 
         ns="$(arg node_name)"/>
-      <remap from="gps/fix" to="gps/fix"/>
+      <remap from="ublox/fix" to="gps/fix"/>
+      <remap from="ublox/fix_velocity" to="gps/fix_velocity"/>
     </node>
   </group>
 
