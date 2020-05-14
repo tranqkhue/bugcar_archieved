@@ -299,6 +299,9 @@ class Node:
                 if (self.encodm):
                     self.encodm.update_publish(enc1, enc2)
                 self.updater.update()
+            if ('enc1' not in vars()) or ('enc2' not in vars()) or (not enc1) or (not enc2):
+                if (self.encodm):
+                    self.encodm.update_publish(0,0)
             self.movement.run()
             r_time.sleep()
 
