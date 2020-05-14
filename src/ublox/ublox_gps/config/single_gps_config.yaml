@@ -1,15 +1,15 @@
 ublox:
   debug: 2                    # Range 0-4 (0 means no debug statements will print)
 
-  device: /dev/ttyACM2
+  device: /dev/ttyUSB_gps
   frame_id: base_link
   velocity_frame_id: map
   dynamic_model: pedestrian   # Velocity restricted to 0 m/s. Zero dynamics 
                               # assumed.
   fix_mode: auto
 
-  rate: 10                 # Measurement rate in Hz
-  nav_rate: 5                # in number of measurement cycles
+  rate: 8                # Measurement rate in Hz
+  nav_rate: 8                # in number of measurement cycles
 
   uart1:
     baudrate: 9600           # C94-M8P specific
