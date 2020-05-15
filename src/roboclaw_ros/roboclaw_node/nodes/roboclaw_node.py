@@ -42,7 +42,7 @@ class EncoderOdom:
 
         dist_left = left_ticks / self.TICKS_PER_METER
         dist_right = right_ticks / self.TICKS_PER_METER
-        dist = (dist_right + dist_left) / 2.0
+        dist = (dist_right + dist_left)
 
         current_time = rospy.Time.now()
         d_time = (current_time - self.last_enc_time).to_sec()
