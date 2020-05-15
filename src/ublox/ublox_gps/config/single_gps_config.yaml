@@ -8,8 +8,8 @@ ublox:
                               # assumed.
   fix_mode: auto
 
-  rate: 8                # Measurement rate in Hz
-  nav_rate: 8                # in number of measurement cycles
+  rate: 5                # Measurement rate in Hz
+  nav_rate: 5                # in number of measurement cycles
 
   uart1:
     baudrate: 9600           # C94-M8P specific
