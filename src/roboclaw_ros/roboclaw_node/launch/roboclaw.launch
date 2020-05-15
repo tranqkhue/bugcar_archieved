@@ -6,7 +6,7 @@
     <arg name="address" default="128"/>
     <arg name="max_speed" default="2.0"/>
     <arg name="ticks_per_meter" default="1833.5"/>
-    <arg name="base_width" default="0.315"/>
+    <arg name="base_width" default="0.39"/>
     <arg name="run_diag" default="true"/>
     <arg name="pub_odom" default="true"/>
     <arg name="stop_movement" default="true"/>
