@@ -1,6 +1,9 @@
 # roboclaw_ros
 This is the duplication of the [bugs-fixed roboclaw_ros](https://github.com/gnuoyohes/roboclaw_ros)
 
+## How to calculate "ticks_per_meter" param?
+4*(encoder_pulse_per_round)/(wheel_diameter*pi)
+
 ## Before you begin
 Before you use this package you need to calibrate the velocity PID on the Roboclaw.  This will requare the
 installation of the free software [IonMotion](http://downloads.ionmc.com/software/IonMotion/ionmotion.htm) (Windows only).
