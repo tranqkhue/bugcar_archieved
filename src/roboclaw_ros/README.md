@@ -50,19 +50,20 @@ The launch file can be configure at the command line with arguments, by changing
 |baud|115200|Baud rate the Roboclaw is configured for|
 |address|128|The address the Roboclaw is set to, 128 is 0x80|
 |max_speed|2.0|Max speed allowed for motors in meters per second|
-|ticks_per_meter|4342.2|The number of encoder ticks per meter of movement|
-|base_width|0.315|Width from one wheel edge to another in meters|
+|ticks_per_meter|1833.5|The number of encoder ticks per meter of movement|
+|base_width|0.39|Width from one wheel edge to another in meters|
+|publish_tf|false|Publish odom->base_link transform if set to true|
 |pub_odom|true|Publishes Odometry if set to true|
 |stop_movement|true|Stops movement if no velocity commands are received for 1 sec|
 
 ## Topics
-###Subscribed
+### Subscribed
 /cmd_vel [(geometry_msgs/Twist)](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html)  
 Velocity commands for the mobile base.
 
-###Published
+### Published
 /odom [(nav_msgs/Odometry)](http://docs.ros.org/api/nav_msgs/html/msg/Odometry.html)  
 Odometry output from the mobile base.
 
-#IF SOMETHING IS BROEKN:
+## IF SOMETHING IS BROEKN:
 Please file an issue, it makes it far easier to keep track of what needs to be fixed. It also allows others that might have solved the problem to contribute.  If you are confused feel free to email me, I might have overlooked something in my readme.

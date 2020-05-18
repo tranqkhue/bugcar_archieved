@@ -25,6 +25,7 @@ class EncoderOdom:
         self.last_enc_right = 0
         self.last_enc_time = rospy.Time.now()
         self.vel_theta = 0
+        self.PUBLISH_TF = rospy.get_param("~publish_tf", "false")
 
     @staticmethod
     def normalize_angle(angle):
@@ -85,12 +86,13 @@ class EncoderOdom:
         quat = tf.transformations.quaternion_from_euler(0, 0, cur_theta)
         current_time = rospy.Time.now()
 
-        br = tf.TransformBroadcaster()
-        br.sendTransform((cur_x, cur_y, 0),
-                         tf.transformations.quaternion_from_euler(0, 0, -cur_theta),
-                         current_time,
-                         "base_link",
-                         "odom")
+        if (self.PUBLISH_TF == True):
+	        br = tf.TransformBroadcaster()
+	        br.sendTransform((cur_x, cur_y, 0),
+	                         tf.transformations.quaternion_from_euler(0, 0, -cur_theta),
+	                         current_time,
+	                         "base_link",
+	                         "odom")
 
         odom = Odometry()
         odom.header.stamp = current_time
