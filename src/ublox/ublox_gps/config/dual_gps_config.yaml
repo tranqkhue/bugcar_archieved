@@ -1,61 +1,61 @@
-ublox_1:
-  debug: 2                    # Range 0-4 (0 means no debug statements will print)
+gps1:
+    debug: 2                    # Range 0-4 (0 means no debug statements will print)
 
-  device: /dev/ttyACM1
-  frame_id: base_link
-  velocity_frame_id: map
-  dynamic_model: pedestrian   # Velocity restricted to 0 m/s. Zero dynamics 
+    device: /dev/ttyUSB_gps1
+    frame_id: base_link
+    velocity_frame_id: map
+    dynamic_model: pedestrian   # Velocity restricted to 0 m/s. Zero dynamics 
                               # assumed.
-  fix_mode: auto
+    fix_mode: auto
 
-  rate: 10                 # Measurement rate in Hz
-  nav_rate: 5                # in number of measurement cycles
+    rate: 10                 # Measurement rate in Hz
+    nav_rate: 10                # in number of measurement cycles
 
-  uart1:
-    baudrate: 9600           # C94-M8P specific
-    in: 0                     # No UART in for base
-    out: 0                   # RTCM 3
+    uart1:
+      baudrate: 9600           # C94-M8P specific
+      in: 0                     # No UART in for base
+      out: 0                   # RTCM 3
 
-  gnss:
-    glonass: false             # Supported by C94-M8P
-    beidou: true            # Supported by C94-M8P
-    qzss: false               # Supported by C94-M8P
+    gnss:
+      glonass: false             # Supported by C94-M8P
+      beidou: true            # Supported by C94-M8P
+      qzss: false               # Supported by C94-M8P
 
-  inf: 
-    all: true               # Whether to display all INF messages in console
+    inf: 
+      all: true               # Whether to display all INF messages in console
 
   # Enable u-blox message publishers
-  publish:
-    tim:
-      tm2: true 
+    publish:
+      tim:
+        tm2: true 
 
 #==============================================================================
 
-ublox_2:
-  device: /dev/ttyACM3
-  frame_id: base_link
-  velocity_frame_id: map
-  dynamic_model: pedestrian   # Velocity restricted to 0 m/s. Zero dynamics 
+gps2:
+    device: /dev/ttyUSB_gps2
+    frame_id: base_link
+    velocity_frame_id: map
+    dynamic_model: pedestrian   # Velocity restricted to 0 m/s. Zero dynamics 
                               # assumed.
-  fix_mode: auto
+    fix_mode: auto
 
-  rate: 10                 # Measurement rate in Hz
-  nav_rate: 5                # in number of measurement cycles
+    rate: 10                 # Measurement rate in Hz
+    nav_rate: 10                # in number of measurement cycles
 
-  uart1:
-    baudrate: 9600           # C94-M8P specific
-    in: 0                     # No UART in for base
-    out: 0                   # RTCM 3
+    uart1:
+      baudrate: 9600           # C94-M8P specific
+      in: 0                     # No UART in for base
+      out: 0                   # RTCM 3
 
-  gnss:
-    glonass: false             # Supported by C94-M8P
-    beidou: true            # Supported by C94-M8P
-    qzss: false               # Supported by C94-M8P
+    gnss:
+      glonass: false             # Supported by C94-M8P
+      beidou: true            # Supported by C94-M8P
+      qzss: false               # Supported by C94-M8P
 
-  inf: 
-    all: true               # Whether to display all INF messages in console
+    inf: 
+      all: true               # Whether to display all INF messages in console
 
   # Enable u-blox message publishers
-  publish:
-    tim:
-      tm2: true 
+    publish:
+      tim:
+        tm2: true 

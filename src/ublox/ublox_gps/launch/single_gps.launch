@@ -1,12 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <launch>
-  <arg name="node_name" default="ublox" />
+  <arg name="node_name" default="gps" />
   <arg name="param_file_name" doc="name of param file, e.g. rover" default="single_gps_config" />
   <arg name="output" default="screen" />
   <arg name="respawn" default="true" />
   <arg name="respawn_delay" default="30" />
   <arg name="clear_params" default="false" />
+  <rosparam command="load" file="$(find ublox_gps)/config/$(arg param_file_name).yaml"/>
+  
 
   <group>
     <node pkg="ublox_gps" type="ublox_gps" name="$(arg node_name)"
@@ -14,12 +16,7 @@
       clear_params="$(arg clear_params)"
       respawn="$(arg respawn)" 
       respawn_delay="$(arg respawn_delay)">
-
-      <rosparam command="load" 
-        file="$(find ublox_gps)/config/$(arg param_file_name).yaml" 
-        ns="$(arg node_name)"/>
-      <remap from="ublox/fix" to="gps/fix"/>
-      <remap from="ublox/fix_velocity" to="gps/fix_velocity"/>
+      
     </node>
   </group>
 
