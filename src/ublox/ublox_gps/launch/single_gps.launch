@@ -7,7 +7,6 @@
   <arg name="respawn" default="true" />
   <arg name="respawn_delay" default="30" />
   <arg name="clear_params" default="false" />
-  <rosparam command="load" file="$(find ublox_gps)/config/$(arg param_file_name).yaml"/>
   
 
   <group>
@@ -16,8 +15,12 @@
       clear_params="$(arg clear_params)"
       respawn="$(arg respawn)" 
       respawn_delay="$(arg respawn_delay)">
+    <param name="device" value="/dev/ttyUSB_gps1" />
+    <param name="frame_id" value="base_link" />
+    <param name="velocity_frame_id" value="map" />
       
     </node>
   </group>
 
 </launch>
+

@@ -17,7 +17,7 @@ class EncoderOdom:
     def __init__(self, ticks_per_meter, base_width):
         self.TICKS_PER_METER = ticks_per_meter
         self.BASE_WIDTH = base_width
-        self.odom_pub = rospy.Publisher('/odom', Odometry, queue_size=1)
+        self.odom_pub = rospy.Publisher('/odom/raw', Odometry, queue_size=1)
         self.cur_x = 0
         self.cur_y = 0
         self.cur_theta = 0.0
@@ -86,7 +86,7 @@ class EncoderOdom:
         quat = tf.transformations.quaternion_from_euler(0, 0, cur_theta)
         current_time = rospy.Time.now()
 
-        if (self.PUBLISH_TF == True):
+        if (self.PUBLISH_TF == "true"):
 	        br = tf.TransformBroadcaster()
 	        br.sendTransform((cur_x, cur_y, 0),
 	                         tf.transformations.quaternion_from_euler(0, 0, -cur_theta),
@@ -103,12 +103,12 @@ class EncoderOdom:
         odom.pose.pose.position.z = 0.0
         odom.pose.pose.orientation = Quaternion(*quat)
 
-        odom.pose.covariance[0] = 0.01
-        odom.pose.covariance[7] = 0.01
-        odom.pose.covariance[14] = 99999
-        odom.pose.covariance[21] = 99999
-        odom.pose.covariance[28] = 99999
-        odom.pose.covariance[35] = 0.01
+        odom.pose.covariance[0] = 1e-06
+        odom.pose.covariance[7] = 1e-06
+        odom.pose.covariance[14] = 1e-06
+        odom.pose.covariance[21] = 1e-06
+        odom.pose.covariance[28] = 1e-06
+        odom.pose.covariance[35] = 1e-06
 
         odom.child_frame_id = 'base_link'
         odom.twist.twist.linear.x = vx
@@ -323,10 +323,10 @@ class Node:
         state, message = self.ERRORS[status]
         stat.summary(state, message)
         try:
-            stat.add("Main Batt V:", float(roboclaw.ReadMainBatteryVoltage(self.address)[1] / 10))
-            stat.add("Logic Batt V:", float(roboclaw.ReadLogicBatteryVoltage(self.address)[1] / 10))
-            stat.add("Temp1 C:", float(roboclaw.ReadTemp(self.address)[1] / 10))
-            stat.add("Temp2 C:", float(roboclaw.ReadTemp2(self.address)[1] / 10))
+            stat.add("Main Batt V:", float(roboclaw.ReadMainBatteryVoltage(self.address)[1]) / 10.0)
+            stat.add("Logic Batt V:", float(roboclaw.ReadLogicBatteryVoltage(self.address)[1]) / 10.0)
+            stat.add("Temp1 C:", float(roboclaw.ReadTemp(self.address)[1]) / 10.0)
+            stat.add("Temp2 C:", float(roboclaw.ReadTemp2(self.address)[1]) / 10.0)
         except OSError as e:
             rospy.logwarn("Diagnostics OSError: %d", e.errno)
             rospy.logdebug(e)

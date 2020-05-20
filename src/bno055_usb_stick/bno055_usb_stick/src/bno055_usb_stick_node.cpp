@@ -63,8 +63,8 @@ int main(int argc, char *argv[]) {
   invert_tf = ros::param::param("~invert_tf", false);
 
   // setup publishers
-  out_pub = nh.advertise< bno055_usb_stick_msgs::Output >("bno055/output", 1);
-  imu_pub = nh.advertise< sensor_msgs::Imu >("imu", 1);
+  out_pub = nh.advertise< bno055_usb_stick_msgs::Output >("bno055_output", 1);
+  imu_pub = nh.advertise< sensor_msgs::Imu >("imu/data", 1);
   pose_pub = nh.advertise< geometry_msgs::PoseStamped >("pose", 1);
   mag_pub = nh.advertise< sensor_msgs::MagneticField >("magnetic_field", 1);
   temp_pub = nh.advertise< sensor_msgs::Temperature >("temperature", 1);

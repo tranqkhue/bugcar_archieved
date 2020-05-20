@@ -14,6 +14,7 @@
 #include <sensor_msgs/MagneticField.h>
 #include <sensor_msgs/Temperature.h>
 #include <tf/transform_datatypes.h>
+#include <tf2_geometry_msgs/tf2_geometry_msgs.h>
 
 #include <bno055_usb_stick/constants.hpp>
 #include <bno055_usb_stick_msgs/CalibrationStatus.h>
@@ -65,14 +66,14 @@ public:
     imu.linear_acceleration = output.acceleration;
 
     // To indicate no covariance estimate, set the 1st elements of matrice -1
-    imu.orientation_covariance[0] = 0.1;
-    std::fill(imu.orientation_covariance.begin() + 1, imu.orientation_covariance.end(), 0.1);
-    imu.angular_velocity_covariance[0] = 0.1;
+    imu.orientation_covariance[0] = 0.001;
+    std::fill(imu.orientation_covariance.begin() + 1, imu.orientation_covariance.end(), 0.001);
+    imu.angular_velocity_covariance[0] = 0.001;
     std::fill(imu.angular_velocity_covariance.begin() + 1, imu.angular_velocity_covariance.end(),
-              0.1);
-    imu.linear_acceleration_covariance[0] = 0.1;
+              0.001);
+    imu.linear_acceleration_covariance[0] = 0.001;
     std::fill(imu.linear_acceleration_covariance.begin() + 1,
-              imu.linear_acceleration_covariance.end(), 0.1);
+              imu.linear_acceleration_covariance.end(), 0.001);
 
     return imu;
   }
@@ -130,19 +131,28 @@ private:
 
   static bno055_usb_stick_msgs::EulerAngles decodeEul(const boost::uint8_t *data) {
     bno055_usb_stick_msgs::EulerAngles eul;
-    eul.heading = decodeVal(data[1], data[0], Constants::EUL_DENOM) * M_PI / 180.;
-    eul.roll = decodeVal(data[3], data[2], Constants::EUL_DENOM) * M_PI / 180.;
-    eul.pitch = decodeVal(data[5], data[4], Constants::EUL_DENOM) * M_PI / 180.;
+    eul.heading = decodeVal(data[1], data[0], Constants::EUL_DENOM); // * M_PI / 180.;
+    eul.roll = decodeVal(data[3], data[2], Constants::EUL_DENOM); // * M_PI / 180.;
+    eul.pitch = decodeVal(data[5], data[4], Constants::EUL_DENOM); // * M_PI / 180.;
     return eul;
   }
 
   static geometry_msgs::Quaternion decodeQua(const boost::uint8_t *data) {
-    geometry_msgs::Quaternion qua;
-    qua.w = decodeVal(data[1], data[0], Constants::QUA_DENOM);
-    qua.x = decodeVal(data[3], data[2], Constants::QUA_DENOM);
-    qua.y = decodeVal(data[5], data[4], Constants::QUA_DENOM);
-    qua.z = decodeVal(data[7], data[6], Constants::QUA_DENOM);
-    return qua;
+    geometry_msgs::Quaternion quat_msg;
+    quat_msg.w = decodeVal(data[1], data[0], Constants::QUA_DENOM);
+    quat_msg.x = decodeVal(data[3], data[2], Constants::QUA_DENOM);
+    quat_msg.y = decodeVal(data[5], data[4], Constants::QUA_DENOM);
+    quat_msg.z = decodeVal(data[7], data[6], Constants::QUA_DENOM);
+    
+    //Convert to ENU standard
+    tf2::Quaternion q_orig, q_rot, q_new; 
+    tf2::convert(quat_msg, q_orig);
+    q_rot.setRPY(0,0,-1.570796327);
+    q_new = q_rot*q_orig;
+    q_new.normalize();
+    tf2::convert(q_new,quat_msg);
+    
+    return quat_msg;
   }
 
   static geometry_msgs::Vector3 decodeLia(const boost::uint8_t *data) {
