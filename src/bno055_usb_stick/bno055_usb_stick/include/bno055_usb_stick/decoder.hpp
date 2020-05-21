@@ -144,14 +144,6 @@ private:
     quat_msg.y = decodeVal(data[5], data[4], Constants::QUA_DENOM);
     quat_msg.z = decodeVal(data[7], data[6], Constants::QUA_DENOM);
     
-    //Convert to ENU standard
-    tf2::Quaternion q_orig, q_rot, q_new; 
-    tf2::convert(quat_msg, q_orig);
-    q_rot.setRPY(0,0,-1.570796327);
-    q_new = q_rot*q_orig;
-    q_new.normalize();
-    tf2::convert(q_new,quat_msg);
-    
     return quat_msg;
   }
 
