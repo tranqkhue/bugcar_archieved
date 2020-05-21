@@ -3,6 +3,7 @@
 <!-- ========================================================================================================================================== -->
   
     <node name="odom_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+	<param name="reset_on_time_jump" value="true" />
         <param name="frequency" value="60"/>
         
      	<param name="sensor_timeout" value="0.1"/>
@@ -73,6 +74,7 @@
 <!-- ========================================================================================================================================== -->
 
     <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
+	<param name="reset_on_time_jump" value="true" />
 	<!-- Placeholders for input remapping  -->
     	<remap from="odometry/filtered" to="odom/filtered_map_baselink"/>
     	<remap from="imu/data" to="imu/data"/>
@@ -94,6 +96,7 @@
 <!-- ========================================================================================================================================== -->
 
     <node name="map_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+	<param name="reset_on_time_jump" value="true" />
         <param name="frequency" value="60"/>
       	<param name="sensor_timeout" value="0.1"/>
 
@@ -119,7 +122,8 @@
                                         false, false, false,
                                         false, false, false,
                                         false, false, false]</rosparam>
-	<rosparam param="odom1_differential" value="false" />
+	<!-- make sure that ekf does not differentiate odom from navsat -->
+	<param name="odom1_differential" value="false" /> 
 
 
       	<rosparam param="imu0_config">[false, false, false,
