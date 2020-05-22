@@ -6,7 +6,7 @@ Please refer at the [original swri-robotics/mapviz](https://github.com/swri-robo
 ## Demo
 Visualize gps/fix by a green-line overlay on the campus
 
-[!alt text](https://github.com/tranqkhue/bugcar/blob/master/src/bugcar_mapviz/doc/mapviz_screenshot_1.png)
+![alt text](https://github.com/tranqkhue/bugcar/blob/master/src/bugcar_mapviz/doc/mapviz_screenshot_1.png)
 
 ## Bing Map API key
 
