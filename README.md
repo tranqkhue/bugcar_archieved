@@ -10,6 +10,8 @@ For Python-based package, please add [Shebang](https://en.wikipedia.org/wiki/She
 - `#!/usr/bin/env python2`
 - `# -*- coding: utf-8 -*-`
 
+And also make sure that Python scripts are executable of the error `Couldn't find executable named` would happen!
+
 Make sure the nodes in the workspace following rules:
 - Correct topics
 - Correct message types
