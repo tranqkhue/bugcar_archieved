@@ -13,7 +13,7 @@
 
       	<remap from="odometry/filtered" to="odom/filtered_odom_baselink"/>
 
-     	<param name="odom0" value="odom/raw"/>
+     	<param name="odom0" value="odom/wheel"/>
       	<rosparam param="odom0_config">[false, false, true,
                                         false, false, false,
                                         true,  true,  false,
