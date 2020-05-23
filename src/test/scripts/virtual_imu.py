@@ -42,6 +42,7 @@ class odom:
             msg.linear_acceleration_covariance[0] = self.covariance[18]
             msg.linear_acceleration_covariance[3] = self.covariance[21]
             msg.linear_acceleration_covariance[6] = self.covariance[24]
+		
             msg.header.stamp = self.stamp
             msg.header.frame_id = "base_link"
 
