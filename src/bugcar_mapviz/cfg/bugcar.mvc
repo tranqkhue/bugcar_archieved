@@ -1,0 +1,78 @@
+capture_directory: ~
+fixed_frame: map
+target_frame: map
+fix_orientation: false
+rotate_90: false
+enable_antialiasing: true
+show_displays: true
+show_status_bar: true
+show_capture_tools: true
+window_width: 1389
+window_height: 759
+view_scale: 0.1781526
+offset_x: -2.413319
+offset_y: -10.29992
+use_latest_transforms: true
+background: "#babdb6"
+displays:
+  - type: mapviz_plugins/tile_map
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      custom_sources:
+        - base_url: http://localhost:8080/wmts/gm_layer/gm_grid/{level}/{x}/{y}.png
+          max_zoom: 19
+          name: VGU
+          type: wmts
+      bing_api_key: Avsqyvz6N-_fMWQEW8yR_h2aeA92mes5Th6i3Ch1RRmER6gSyftm36PZZIfKeny_
+      source: Bing Maps (terrain)
+  - type: mapviz_plugins/odometry
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /odom/filtered_map_baselink
+      color: "#fce94f"
+      draw_style: arrows
+      position_tolerance: 4
+      buffer_size: 1
+      show_laps: false
+      show_covariance: true
+      static_arrow_sizes: false
+      arrow_size: 117
+      show_timestamps: 0
+  - type: mapviz_plugins/navsat
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /gps/filtered
+      color: "#cc0000"
+      draw_style: points
+      position_tolerance: 0
+      buffer_size: 0
+  - type: mapviz_plugins/tf_frame
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      frame: origin
+      color: "#00ff00"
+      draw_style: points
+      position_tolerance: 1
+      buffer_size: 0
+      static_arrow_sizes: false
+      arrow_size: 500
+  - type: mapviz_plugins/tf_frame
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      frame: odom
+      color: "#3465a4"
+      draw_style: lines
+      position_tolerance: 1
+      buffer_size: 1
+      static_arrow_sizes: false
+      arrow_size: 167

@@ -1,6 +1,8 @@
 <launch>
   <node pkg="bugcar_mapviz" type="mapviz_origin_set.py" name="mapviz_origin_set"></node>
-  <node pkg="mapviz" type="mapviz" name="mapviz"></node>
+  <node pkg="mapviz" type="mapviz" name="mapviz">
+    <param name="config" value="$(find bugcar_mapviz)/cfg/bugcar.mvc" />
+  </node>
 
   <node pkg="swri_transform_util" type="initialize_origin.py" name="initialize_origin" >
     <param name="local_xy_frame" value="/map"/>
