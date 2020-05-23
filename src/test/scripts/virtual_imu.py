@@ -26,8 +26,8 @@ class odom:
     def run(self):
         rospy.init_node("virtual_odom")
         pub = rospy.Publisher("virtual/imu",Imu,queue_size=1)
-        sub = rospy.Subscriber("imu",Imu,self.callback) 
-        rate = rospy.Rate(10)
+        sub = rospy.Subscriber("imu/data",Imu,self.callback) 
+        rate = rospy.Rate(100)
         while not rospy.is_shutdown():
             msg = Imu()
             msg.orientation = self.orientation
