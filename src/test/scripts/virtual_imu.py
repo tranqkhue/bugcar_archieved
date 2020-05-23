@@ -22,9 +22,11 @@ class odom:
         while not rospy.is_shutdown():
             msg = Imu()
             msg.orientation = self.orientation
-            msg.orientation_covariance = self.covariance
+            msg.orientation_covariance[0] = self.covariance[0]
+            msg.orientation_covariance[3] = self.covariance[3]
+            msg.orientation_covariance[6] = self.covariance[6]
             msg.header.stamp = self.stamp
-            msg.header.frame_id = "odom"
+            msg.header.frame_id = "base_link"
 
             pub.publish(msg)
             rate.sleep()
