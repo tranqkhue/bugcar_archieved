@@ -6,7 +6,7 @@ Please refer at the [original swri-robotics/mapviz](https://github.com/swri-robo
 ## Demo
 Visualize gps/fix by a green-line overlay on the campus
 
-[!alt text](https://github.com/tranqkhue/bugcar/blob/master/src/bugcar_mapviz/doc/mapviz_screenshot_1.png)
+![alt text](https://github.com/tranqkhue/bugcar/blob/master/src/bugcar_mapviz/doc/mapviz_screenshot_1.png)
 
 ## Bing Map API key
 
@@ -14,7 +14,7 @@ Bing Map is free for small testing and integrated into Mapviz, which means no ha
 
 **THIS API KEY IS FOR TESTING ONLY! PLEASE DO NOT ABUSE IT**
 
-Bing Map API key is `_fMWQEW8yR_h2aeA92mes5Th6i3Ch1RRmER6gSyftm36PZZIfKeny_`
+Bing Map API key is `Avsqyvz6N-_fMWQEW8yR_h2aeA92mes5Th6i3Ch1RRmER6gSyftm36PZZIfKeny_`
 
 ## Important
 

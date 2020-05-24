@@ -3,16 +3,16 @@
 # About
 This repo is Bugcar Workspace, which includes the neccessary source codes and launch files for the Bugcar Autonomous Outdoor Rover
 # Important
-All the launch files are in **bring_up** folder
+1. All the launch files are in **bring_up** folder
 
-For Python-based package, please add [Shebang](https://en.wikipedia.org/wiki/Shebang_%28Unix%29#Portability) at the top of the Python src scripts
+2. For Python-based package, create an empty `__init__.py` file in the src folder, and add [Shebang](https://en.wikipedia.org/wiki/Shebang_%28Unix%29#Portability) at the top of the Python src scripts
 
 - `#!/usr/bin/env python2`
 - `# -*- coding: utf-8 -*-`
 
-And also make sure that Python scripts are executable of the error `Couldn't find executable named` would happen!
+3. And also make sure that Python scripts are executable of the error `Couldn't find executable named` would happen!
 
-Make sure the nodes in the workspace following rules:
+4. Make sure the nodes in the workspace following rules:
 - Correct topics
 - Correct message types
 - Correct frame
