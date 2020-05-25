@@ -3,10 +3,19 @@
 This repo contains the source of the original [ROS robot_localization](https://github.com/cra-ros-pkg/robot_localization), and more important, the config and launch files for Bugcar's robot_localization package
 ## What would I do if I had a bug?
 Check closed issuses first, then if your problem had not been asked, raised a new one!
+### Common bugs:
+ - **TF jumps or drifts:**
+    - If the tf drifts, but the odom topics do not experience erractic jumps, then the robot_localization is trying to focalize the origin of the odom frame with respect to the map frame
+    - Make sure that only map_ekf and odom_ekf publish tf via:
+      **~$ rostopic info tf**
+    - The covariance matrices of all observation sources (imu, odom, gps) are diagonal
+ - **Utm frame is not in the same branch as odom frame**
+    - Make sure that the roboclaw always publish **odom/wheel** topic even when first initialize.
+    - Increase **delay** param in navsat_transform_node
 ## Important
 - Understand the REP aka ROS' standard for reference frames, orientation and units!!!
 - Make use of *rqt_graph* (for check relationship between ROS nodes), *rostopic*, *rosnode*, and *rosrun tf view_frames*
-- The folder is named bugcar_robot_localization. However, the package name **is still robot_localization**. This misunderstand can happen when trying to run the package
+- The folder is named bugcar_robot_localization. However, the package name **is still `robot_localization`**. This misunderstand can happen when trying to run the package
 ## How to tune robot_localization?
 Reference to [robot_localization wiki](http://docs.ros.org/melodic/api/robot_localization/html/index.html)
 - To set topics for data subscripting and publising: edit *remap* in *launch/bugcar_robot_localization.launch*

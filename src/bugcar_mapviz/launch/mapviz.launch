@@ -7,5 +7,5 @@
     <param name="local_xy_origin" value="swri"/>
   </node>
 
-  <node pkg="tf" type="static_transform_publisher" name="swri_transform" args="0 0 0 0 0 0 /map /origin 100"  />
+  <node pkg="tf" type="static_transform_publisher" name="swri_transform" args="0 0 0 0 0 0 /map /origin 100"/>
 </launch>
