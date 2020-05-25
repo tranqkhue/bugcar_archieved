@@ -11,7 +11,7 @@ It will initialize a package with a name, dependencies and a `src` folder
 Add Python scripts inside `src` folder
 
 Caution: add Shebang at the top of Python scripts
-```
+```python
 #!/usr/bin/env python2
 # -*- coding: utf-8 -*-
 ```
@@ -24,7 +24,7 @@ Caution: add Shebang at the top of Python scripts
 
 The `setup.py` should be in the package's root directory (not in package `src` folder, for example)
 
-```
+```python
 ## ! DO NOT MANUALLY INVOKE THIS setup.py, USE CATKIN INSTEAD
 from distutils.core import setup
 from catkin_pkg.python_setup import generate_distutils_setup
