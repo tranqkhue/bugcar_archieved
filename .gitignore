@@ -8,3 +8,4 @@ src/bugcar_navigation/src/bugcar_google_map_global_planner/src/bugcar_google_map
 src/bugcar_navigation/src/occupancy_grid_template/src/free_occupancy_grid.egg-info/
 bag_files/*
 !bag_files/README.md
+src/bugcar_mapviz/CATKIN_IGNORE
