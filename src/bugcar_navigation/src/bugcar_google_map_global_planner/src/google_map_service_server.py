@@ -7,28 +7,33 @@ import polyline
 import utm
 
 import rospy
+import tf as ros_tf
+
+from std_msgs.msg import Header
+from sensor_msgs.msg import NavSatFix
 from nav_msgs.msg import Path
+from geometry_msgs.msg import PoseStamped
 
 from bugcar_google_map_global_planner.srv import GetPathLL
 from bugcar_google_map_global_planner.srv import GetPathMap
-from bugcar_google_map_global_planner.srv import GetPathResponse
 
 import numpy as np
 #============================================================================================
 
 
+
 #============================================================================================
-'''   Some GPS and coordinate ultilities   '''
+'''   Init ROS node, input and output topics   '''
+rospy.init_node("Google_Map_Get_Path_Service")
+tf_listener = ros_tf.TransformListener()    
 
-#--------------------------------------------------------------------------------------------
-# Get GPS position
-def gps_coordinate_callback(msg):
-    #msg type: sensor_msgs/NavSatFix
-    global gps_position
-    gps_position = {'lat': msg.latitude, 'long': msg.longitude}
+gps_position_input  = "gps/filtered"
+#============================================================================================
 
-#--------------------------------------------------------------------------------------------
-#Convert position in map frame to lat_long coordinate 
+
+
+#============================================================================================
+'''   This function converts a point in map coordinate into lat_long   '''
 def map2ll(x_map,y_map):
     
     ros_tf_transformer = ros_tf.TransformerROS()
@@ -50,9 +55,24 @@ def map2ll(x_map,y_map):
     ll_point = utm.to_latlon(utm_point[0], utm_point[1], UTM_ZONE_NUMBER, UTM_ZONE_LETTER)
     ll_point = {'lat':ll_point[0], 'long':ll_point[1]}
     return(ll_point)
+#============================================================================================  
 
+
+
+#============================================================================================
+'''   This function gets the GPS coordinate and convert it into a dict   '''
+def gps_coordinate_callback(msg):
+    #msg type: sensor_msgs/NavSatFix
+    global gps_position
+    gps_position = {'lat': msg.latitude, 'long': msg.longitude}
+  
+#============================================================================================
+
+  
+    
+#============================================================================================
+'''   THIS WHOLE SECTION IS FOR PATH CALCULATION AND PATH_MSGS GENERATION!!!   '''
 #--------------------------------------------------------------------------------------------
-#Convert UTM coordinates to map frame
 def utm_map_tf(utm_points):
     
     ros_tf_transformer = ros_tf.TransformerROS()
@@ -71,15 +91,10 @@ def utm_map_tf(utm_points):
         map_points.append(list(np.dot(utm_map_tf_matrix, i)))
     
     return(map_points)
-#============================================================================================
-
-
-#============================================================================================
-'''   THIS WHOLE SECTION IS FOR PATH CALCULATION AND PATH_MSGS GENERATION!!!   '''
-
+    
 #--------------------------------------------------------------------------------------------
-# Calculate heading from (n+1, n) Google Map response points for final path
-# As PoseStamped and also Path require each points to have a robot's heading
+    
+#--------------------------------------------------------------------------------------------
 def calculate_heading(map_points):
     #Calculate heading in map
     #The first heading is based on current heading
@@ -106,7 +121,8 @@ def calculate_heading(map_points):
             heading.append(list(loop_heading))
         #------------------------------------------------------------------------------------
             
-    return(heading)  
+    return(heading)
+    
 #--------------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------------
@@ -143,7 +159,7 @@ def generate_path_msg(map_points, map_headings):
 def calculate_path(gps_position, geo_goal):
     #Calculate path in MAP FRAME!
     
-    #DANGEROUS ZONE!!!
+    #DANGER ZONE!!!
     #PLEASE CHANGE YOUR OWN API KEY
     #OR NOT, PLEASE DO NOT SPAM THIS API KEY!
     API_KEY = "AIzaSyDc3VNCA56-e-qqel-CfB5rhEr1YwsaXqw"
@@ -181,27 +197,61 @@ def calculate_path(gps_position, geo_goal):
     
     return(map_path_msg)  
     
+#--------------------------------------------------------------------------------------------
+'''   END OF PATH CALCULATION AND PATH_MSGS GENERATION!!!   '''
+#============================================================================================ 
+    
+   
+ 
 #============================================================================================
-rospy.init_node("Google_Map_Global_Planner")
-tf_listener = ros_tf.TransformListener()    
-
-def get_path_ll(ll_request):
-    geo_goal = {'lat': ll_request.latlong_goal.latitude, 'long': ll_request.latlong_goal.latitude}
+'''   This function gets the goal as GPS coordinate 
+      I the vehicle is busy following a plan: log an error
+      If not: calculate a path, globalize it so the Path publisher can catch it  
+'''
+def ll_goal_callback(request):
+    
+    #For GetPathLL srv
+    #Input msg type: sensor_msgs/NavSatFix    latlong_goal
+    #Output type:    nav_msgs/Path            goal_path
+    
+    rospy.loginfo('New latlong-coordinate goal received!')
+    goal_lat  = request.latlong_goal.latitude
+    goal_long = request.latlong_goal.longitude
+    geo_goal = {'lat': goal_lat, 'long': goal_long}
     output_map_path_msg = calculate_path(gps_position, geo_goal)
-    srv_output = GetPathResponse()
-    GetPathResponse.goal_path = 
+    return(output_map_path_msg)
 
-def get_path_map(map_request):
-	goal_x_map = map_request.map_goal.goal.target_pose.pose.position.x
-    goal_y_map = map_request.map_goal.goal.target_pose.pose.position.y
+#============================================================================================
+
+
+
+#============================================================================================
+def map_goal_callback(request):
+    
+    #FRAME_ID OF MAP_GOAL: MAP   
+    #For GetPathMap srv
+    #Input msg type: move_base_msgs/MoveBaseActionGoal  map_goal
+    #Output type:    nav_msgs/Path                      goal_path
+
+    rospy.loginfo('New map-coordinate goal received!')
+    goal_x_map = request.map_goal.goal.target_pose.pose.position.x
+    goal_y_map = request.map_goal.goal.target_pose.pose.position.y
     geo_goal   = map2ll(goal_x_map, goal_y_map)
     output_map_path_msg = calculate_path(gps_position, geo_goal)
-
-
+    return(output_map_path_msg)
+    
 #============================================================================================
 
-service_ll  = rospy.Service('get_path_ll', GetPathLL, get_path_ll)
-service_map = rospy.Service('get_path_map', GetPathMap, get_path_map)
-gps_sub     = rospy.Subscriber(gps_position_input, NavSatFix,         \
-                               gps_coordinate_callback,    queue_size=1)
-rospy.spin() 
+    
+
+#============================================================================================
+''' __MAIN__ '''
+#--------------------------------------------------------------------------------------------        
+gps_sub           = rospy.Subscriber(gps_position_input, NavSatFix,           \
+                                     gps_coordinate_callback,    queue_size=1)
+#--------------------------------------------------------------------------------------------  
+ll_goal_service   = rospy.Service('get_path_ll', GetPathLL, ll_goal_callback)
+#CAUTION! map_goal_sub receive MoveBaseActionGoal from move_base node! 
+#Not from Rviz's PointStamped 
+map_goal_service  = rospy.Service('get_path_map', GetPathMap, map_goal_callback)
+rospy.spin()
