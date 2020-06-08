@@ -14,13 +14,15 @@ namespace google_planner {
         initialize(name, costmap_ros);
     }
     void GooglePlanner::plannerCallBack(const nav_msgs::Path::ConstPtr& pythonPlan){
+        count = 1;
         if(!exec_plan_){
             exec_plan_ = true;
             plan_size = pythonPlan->poses.size();
             if(plan_size != 0){
                 ROS_INFO("\tGooglePlanner:");
-                ROS_INFO("\nGot plan from google map planner, with plan size %d", plan_size);
-                count = 1;
+                ROS_INFO("Got plan from google map planner, with plan size %d", plan_size);
+                ROS_INFO("Buffer size: %d", (int)pose_google.size());
+
                 got_plan_ = true;
                 for (int i = 0; i < plan_size; ++i){
                     pose_google.push_back(pythonPlan->poses[i]);
@@ -55,10 +57,10 @@ namespace google_planner {
         
         if(count == 0){
             ROS_INFO("\tGooglePlanner:");
-            ROS_INFO("Request plan from move_base");
+            ROS_INFO("Request plan from google API...");
         }
         exec_plan_ = false;
-        if(plan_size != 0 || got_plan_){
+        if(plan_size != 0 && got_plan_){
             // Add waypoints to plan
             ROS_INFO("\tGooglePlanner");
             ROS_INFO("Points in original plan: %d", (int)pose_google.size());
@@ -66,11 +68,12 @@ namespace google_planner {
             float dist = sqrt(pow(start.pose.position.x-pose_google[0].pose.position.x,2)
                              +pow(start.pose.position.y-pose_google[0].pose.position.y,2));
             if (dist<0.5){
+                ROS_INFO("Point 0 in plan and start are too close to each other");
+                ROS_INFO("Remove point 0 from original plan");
                 pose_google.erase(pose_google.begin());
             }
             for (int i = 0; i < pose_google.size(); ++i){
                 plan.push_back(pose_google[i]);
-                ROS_INFO("\tGooglePlanner:");
                 ROS_INFO("Adding google waypoint %d to plan",i);
             }
             plan.push_back(goal);

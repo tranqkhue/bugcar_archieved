@@ -6,7 +6,7 @@
   	 	<rosparam file="$(find bugcar_bringup)/cfg/move_base/costmap_common_params.yaml" command="load" ns="local_costmap" />
   		<rosparam file="$(find bugcar_bringup)/cfg/move_base/local_costmap_params.yaml" command="load" />
   		<rosparam file="$(find bugcar_bringup)/cfg/move_base/global_costmap_params.yaml" command="load" />
-  		<rosparam file="$(find bugcar_bringup)/cfg/move_base/teb_local_planner_params.yaml" command="load" />
+  		<rosparam file="$(find bugcar_bringup)/cfg/move_base/teb_local_planner_params.yaml" command="load" ns="TebLocalPlannerROS"/>
 
 		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
 		<param name="base_global_planner" value="google_planner/GooglePlanner" />
