@@ -30,7 +30,7 @@ gps_position_input  = "gps/filtered"
 geo_goal_input      = "move_base/geo_goal"
 map_goal_input      = "move_base/goal"
 
-global_plan_output  = "move_base/GoogleMapGlobalPlanner/plan"
+global_plan_output  = "GoogleMapGlobalPlanner/plan"
 #============================================================================================
 
 
@@ -121,9 +121,19 @@ def utm_map_tf(utm_points):
     
 #--------------------------------------------------------------------------------------------
 def calculate_heading(map_points):
+    #Preprocess points to eliminate points that are too close to each other
     #Calculate heading in map
     #The first heading is based on current heading
     #Then heading is calculated based on the arctan of last and next map points
+
+    for i in range(len(map_points)-1):
+        try:
+            dist = np.sqrt((map_points[i+1][0] - map_points[i][0])**2 \
+                        +(map_points[i+1][1] - map_points[i][1])**2)
+            if dist < 0.5:
+                del map_points[i+1]
+        except IndexError:
+            break
     
     heading = list()
     for i in range(len(map_points)):
@@ -157,8 +167,8 @@ def generate_path_msg(map_points, map_headings):
     path_msg.header = Header()
     path_msg.header.stamp = rospy.Time.now()
     path_msg.header.frame_id = 'map'
+    #----------------------------------------------------------------------------------------            
     
-    #----------------------------------------------------------------------------------------
     for i in range(len(map_points)):
         single_point_pose = PoseStamped()
         single_point_pose.header = Header()
@@ -230,7 +240,7 @@ def calculate_path(gps_position, geo_goal):
  
 #============================================================================================
 '''   This function gets the goal as GPS coordinate 
-      I the vehicle is busy following a plan: log an error
+      If the vehicle is busy following a plan: log an error
       If not: calculate a path, globalize it so the Path publisher can catch it  
 '''
 def geo_goal_callback(msg):
