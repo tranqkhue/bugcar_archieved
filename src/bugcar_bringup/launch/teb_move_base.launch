@@ -15,6 +15,6 @@
 
 	</node>
 
-	<node pkg="bugcar_google_planner" type="google_map_global_planner.py" name="google_map_global_planner"/>
+	<node pkg="bugcar_google_map_global_planner" type="google_map_global_planner.py" name="google_map_global_planner"/>
 
 </launch>

@@ -101,7 +101,17 @@ def generate_path_msg(map_points):
     path_msg.header = Header()
     path_msg.header.stamp = rospy.Time.now()
     path_msg.header.frame_id = 'map'
-        
+    
+    #Preprocess points to eliminate points that are too close to each other
+    for i in range(len(map_points)-1):
+        try:
+            dist = np.sqrt((map_points[i+1][0] - map_points[i][0])**2 \
+                        +(map_points[i+1][1] - map_points[i][1])**2)
+            if dist < 0.5:
+                del map_points[i+1]
+        except IndexError:
+            break
+    
     #----------------------------------------------------------------------------------------
     for i in range(len(map_points)):
         single_point_pose = PoseStamped()
