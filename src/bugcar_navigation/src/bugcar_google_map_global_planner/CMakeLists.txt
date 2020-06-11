@@ -138,7 +138,7 @@ include_directories(
 )
 
 ## Declare a C++ library
-add_library(goole_planner src/google_planner.cpp)
+add_library(google_planner src/google_planner.cpp)
 #add_dependencies(($find ${PROJECT_NAME})/src/google_planner.cpp ${PROJECT_NAME}_generate_messages_cpp)
 #target_link_libraries(($find ${PROJECT_NAME})/src/google_planner.cpp ${catkin_LIBRARIES})
 

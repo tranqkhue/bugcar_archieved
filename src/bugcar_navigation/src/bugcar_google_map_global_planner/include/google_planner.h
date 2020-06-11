@@ -26,7 +26,8 @@ namespace google_planner {
             bool makePlan(const geometry_msgs::PoseStamped& start,
                           const geometry_msgs::PoseStamped& goal,
                           std::vector<geometry_msgs::PoseStamped>& plan);
-
+            float calculate_distance(const geometry_msgs::PoseStamped& x1,
+                                     const geometry_msgs::PoseStamped& x2);
             bool makePlan(const geometry_msgs::PoseStamped& start,
                           const geometry_msgs::PoseStamped& goal,
                           std::vector<geometry_msgs::PoseStamped>& google_plan,

@@ -1,0 +1,7 @@
+<library path="lib/libfake_planner">
+	<class name="fake_planner/FakePlanner" type="fake_planner::FakePlanner" base_class_type="nav_core::BaseGlobalPlanner">
+		<description>
+			this is test global planner
+		</description>
+	</class>
+</library>
