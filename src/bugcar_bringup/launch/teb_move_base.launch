@@ -9,12 +9,12 @@
   		<rosparam file="$(find bugcar_bringup)/cfg/move_base/teb_local_planner_params.yaml" command="load"/>
 
 		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
-		<param name="base_global_planner" value="fake_planner/FakePlanner" />
+		<param name="base_global_planner" value="google_planner/GooglePlanner" />
     		<param name="controller_frequency" value="10.0" />
 		<param name="odom_topic" value="odometry/filtered_odom_baselink" />
 
 	</node>
 
-	<!--node pkg="bugcar_google_map_global_planner" type="google_map_global_planner.py" name="google_map_global_planner"/-->
+	<node pkg="bugcar_google_map_global_planner" type="google_map_global_planner.py" name="google_map_global_planner"/>
 
 </launch>
