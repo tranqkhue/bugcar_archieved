@@ -36,15 +36,6 @@ namespace google_planner {
 
         //ROS_INFO("Finished Initialization");
     }
-
-    float GooglePlanner::calculate_distance(const geometry_msgs::PoseStamped& x1,
-                                            const geometry_msgs::PoseStamped& x2){
-        
-        return sqrt(pow(x1.pose.position.x-x2.pose.position.x,2)+
-                    pow(x2.pose.position.y-x2.pose.position.y,2));
-    
-    }
-
     
     bool GooglePlanner::makePlan(const geometry_msgs::PoseStamped& start,
                                  const geometry_msgs::PoseStamped& goal,
@@ -55,7 +46,6 @@ namespace google_planner {
             ROS_INFO("Request plan from google API...");
         }
         srv_path_map.request.map_goal.goal.target_pose = goal;
-        ROS_INFO("Okai");
         count = 1;
         if(client_google.call(srv_path_map)){
 
@@ -66,36 +56,12 @@ namespace google_planner {
                 ROS_INFO("\tGooglePlanner");
                 ROS_INFO("Points in original plan: %d", plan_size);
                 
-                pose_google.clear();
-                for (int i = 0; i < plan_size; ++i){
-                    pose_google.push_back(srv_path_map.response.goal_path.poses[i]);
-                }
-
-                plan.push_back(start);
-                float dist = sqrt(pow(start.pose.position.x-pose_google[0].pose.position.x,2)
-                                +pow(start.pose.position.y-pose_google[0].pose.position.y,2));
-                for (int i = 0; i < pose_google.size(); ++i){
-                    if(i==0){
-                        dist = calculate_distance(start,pose_google[i]);
-                    }
-                    else if(i == pose_google.size()-1){
-                        dist = calculate_distance(goal,pose_google[i]);
-                    }
-                    else{
-                        dist = calculate_distance(pose_google[i],pose_google[i+1]);
-                    }
-                    if (dist<0.5){
-                        pose_google.erase(pose_google.begin()+i);
-                        i -= 1;
-                    }
-                }
-
-                plan.push_back(start);
+                
                 for (int i = 0; i < pose_google.size(); ++i){
                     plan.push_back(pose_google[i]);
                     ROS_INFO("Adding google waypoint %d to plan",i);
                 }
-                plan.push_back(goal);
+
                 ROS_INFO("Total points in plan: %d", (int)plan.size());
                 // Reset buffer
                 ROS_INFO("\tGooglePlanner:");
@@ -120,9 +86,6 @@ namespace google_planner {
         else{
             ROS_INFO("!!!  No Plan  !!!");
             return false;
-        }
-
-    
-        
+        }        
     }
 };

@@ -9,6 +9,7 @@
 #include <bugcar_google_map_global_planner/GetPathLL.h>
 #include <bugcar_google_map_global_planner/GetPathMap.h>
 #include <cmath>
+#include <time.h>
 
 using std::string;
 
@@ -26,8 +27,6 @@ namespace google_planner {
             bool makePlan(const geometry_msgs::PoseStamped& start,
                           const geometry_msgs::PoseStamped& goal,
                           std::vector<geometry_msgs::PoseStamped>& plan);
-            float calculate_distance(const geometry_msgs::PoseStamped& x1,
-                                     const geometry_msgs::PoseStamped& x2);
             bool makePlan(const geometry_msgs::PoseStamped& start,
                           const geometry_msgs::PoseStamped& goal,
                           std::vector<geometry_msgs::PoseStamped>& google_plan,
@@ -45,6 +44,7 @@ namespace google_planner {
             bool exec_plan_ = false;
             bool got_plan_ = false;
             int count = 0;
+            float point_sep = 4;
 
     };
 };

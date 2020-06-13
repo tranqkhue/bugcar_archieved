@@ -65,7 +65,7 @@ namespace fake_planner{
                        +pow(rand_waypoint[i].pose.position.y- rand_waypoint[i+1].pose.position.y,2));
             ROS_INFO("Distance between waypoint %d and %d is %f",i,i+1,dist);
             insert_point = floor(dist/delta);
-            if (insert_point>1){
+            if (insert_point>=1){
                 ROS_INFO("Adding %d points between waypoint %d and %d", insert_point-1,i,i+1);
                 for(int j = 1; j < insert_point; ++j){
                     dummy_point.pose.position.x = rand_waypoint[i].pose.position.x + delta*j;
