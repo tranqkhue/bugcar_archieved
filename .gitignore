@@ -4,5 +4,6 @@
 build/
 devel/
 install/
+bag_files/
 src/bugcar_navigation/src/bugcar_google_map_global_planner/src/bugcar_google_map_global_planner.egg-info/
 

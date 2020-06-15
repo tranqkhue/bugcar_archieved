@@ -1,0 +1,24 @@
+#Common bugs and fixes:
+
+#Velocity in y and z direction or z position increases rapidly and unbounded
+
+
+- Remove __two_d_mode_ param__ *(not sure why)*
+- Set __z position__ config of odometry source to __true__
+- Set __y,z velocity__ config of odometry source to __true__
+
+#Utm frame is not in the same branch with Odom frame
+
+- Set higher __delay__ param in __navsat_transform_node__
+
+
+#Tf jumps
+
+- Make sure that tf from __map->odom__ and __odom->baselink__ each has only __one__ publisher:
+	- __~$ rostopic info tf__
+	- Possible source of tf publisher:
+		- __bno055 imu __
+		- __roboclaw__
+		- __robot_localization__ (ekf_map and ekf_odom)
+	--> Keep only robot_localization
+	- Set __publish_tf__ param in __ekf_map__ and __ekf_odom__ nodes to __true__ 

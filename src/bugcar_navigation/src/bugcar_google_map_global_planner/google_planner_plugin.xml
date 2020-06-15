@@ -1,0 +1,7 @@
+<library path="lib/libgoogle_planner">
+	<class name="google_planner/GooglePlanner" type="google_planner::GooglePlanner" base_class_type="nav_core::BaseGlobalPlanner">
+    		<description>
+			This is a global planner plugin by bugcar project.
+		</description>
+  	</class>
+</library>

@@ -7,13 +7,15 @@ import polyline
 import utm
 
 import rospy
+import tf as ros_tf
+
+from std_msgs.msg import Header
 from sensor_msgs.msg import NavSatFix
-from move_base_msgs.msg import MoveBaseActionGoal
-from actionlib_msgs.msg import GoalStatusArray
 from nav_msgs.msg import Path
 from geometry_msgs.msg import PoseStamped
-from std_msgs.msg import Header
-import tf as ros_tf
+
+from bugcar_google_map_global_planner.srv import GetPathLL
+from bugcar_google_map_global_planner.srv import GetPathMap
 
 import numpy as np
 #============================================================================================
@@ -22,15 +24,10 @@ import numpy as np
 
 #============================================================================================
 '''   Init ROS node, input and output topics   '''
-rospy.init_node("Google_Map_Global_Planner")
+rospy.init_node("Google_Map_Get_Path_Service")
 tf_listener = ros_tf.TransformListener()    
 
-move_base_stt_input = "move_base/status"
 gps_position_input  = "gps/filtered"
-geo_goal_input      = "move_base/geo_goal"
-map_goal_input      = "move_base/goal"
-
-global_plan_output  = "move_base/GoogleMapGlobalPlanner/plan"
 #============================================================================================
 
 
@@ -71,29 +68,7 @@ def gps_coordinate_callback(msg):
   
 #============================================================================================
 
-
-
-#============================================================================================
-''' This funciton is to check whether the vehicle has bene already following a plan   '''
-def move_base_stt_callback(msg):
-    
-    #msg type: actionlib_msgs/GoalID
-    global busy_executing_plan
-    try:
-        moving_status = msg.status_list[0].status
-        #moving_status == 1: executing plan
-        #moving_status == 2: plan canceled
-        #moving_status == 3: reach goal
-        if (moving_status == 2) or (moving_status==3):
-            busy_executing_plan = False
-        if (moving_status == 1):
-            busy_executing_plan = False
-    except:
-        pass   
-      
-#============================================================================================
-
-    
+  
     
 #============================================================================================
 '''   THIS WHOLE SECTION IS FOR PATH CALCULATION AND PATH_MSGS GENERATION!!!   '''
@@ -118,46 +93,15 @@ def utm_map_tf(utm_points):
     return(map_points)
     
 #--------------------------------------------------------------------------------------------
-    
-#--------------------------------------------------------------------------------------------
-def calculate_heading(map_points):
-    #Calculate heading in map
-    #The first heading is based on current heading
-    #Then heading is calculated based on the arctan of last and next map points
-    
-    heading = list()
-    for i in range(len(map_points)):
-        #------------------------------------------------------------------------------------
-        if (i==0):
-            try:
-                tf_listener.waitForTransform("base_link", "map", rospy.Time(), \
-                                             rospy.Duration(5.0))
-            except (ros_tf.LookupException):
-                rospy.logerr('Cannot find map->base_link tf')
-                return None 
-            (trans, rot) = tf_listener.lookupTransform('base_link', 'map', rospy.Time(0))
-            heading.append(rot)
-        #------------------------------------------------------------------------------------
-        if (i!=0):
-            #np.arctan2: Element-wise arc tangent of x1/x2 choosing the quadrant correctly.
-            z_euler_heading = np.arctan2((map_points[i][1]-map_points[i-1][1]), \
-                                         (map_points[i][0]-map_points[i-1][0]))
-            loop_heading = ros_tf.transformations.quaternion_from_euler(0,0,z_euler_heading)
-            heading.append(list(loop_heading))
-        #------------------------------------------------------------------------------------
-            
-    return(heading)
-    
-#--------------------------------------------------------------------------------------------
 
 #--------------------------------------------------------------------------------------------
-def generate_path_msg(map_points, map_headings):
+def generate_path_msg(map_points):
     
     path_msg = Path()
     path_msg.header = Header()
     path_msg.header.stamp = rospy.Time.now()
     path_msg.header.frame_id = 'map'
-    
+        
     #----------------------------------------------------------------------------------------
     for i in range(len(map_points)):
         single_point_pose = PoseStamped()
@@ -171,8 +115,8 @@ def generate_path_msg(map_points, map_headings):
 
         single_point_pose.pose.orientation.x = 0
         single_point_pose.pose.orientation.y = 0
-        single_point_pose.pose.orientation.z = map_headings[i][2]
-        single_point_pose.pose.orientation.w = map_headings[i][3]
+        single_point_pose.pose.orientation.z = 0
+        single_point_pose.pose.orientation.w = 1
         path_msg.poses.append(single_point_pose)
     #----------------------------------------------------------------------------------------
     
@@ -184,7 +128,7 @@ def generate_path_msg(map_points, map_headings):
 def calculate_path(gps_position, geo_goal):
     #Calculate path in MAP FRAME!
     
-    #DANGEROUS ZONE!!!
+    #DANGER ZONE!!!
     #PLEASE CHANGE YOUR OWN API KEY
     #OR NOT, PLEASE DO NOT SPAM THIS API KEY!
     API_KEY = "AIzaSyDc3VNCA56-e-qqel-CfB5rhEr1YwsaXqw"
@@ -217,8 +161,7 @@ def calculate_path(gps_position, geo_goal):
     map_points = utm_map_tf(utm_points)
 
     #headings index is ordered respectively to map_points index
-    map_headings = calculate_heading(map_points)
-    map_path_msg = generate_path_msg(map_points, map_headings)
+    map_path_msg = generate_path_msg(map_points)
     
     return(map_path_msg)  
     
@@ -233,41 +176,37 @@ def calculate_path(gps_position, geo_goal):
       I the vehicle is busy following a plan: log an error
       If not: calculate a path, globalize it so the Path publisher can catch it  
 '''
-def geo_goal_callback(msg):
+def ll_goal_callback(request):
     
-    #msg type: sensor_msgs/NavSatFix   
-    global output_map_path_msg
-    global busy_executing_plan
+    #For GetPathLL srv
+    #Input msg type: sensor_msgs/NavSatFix    latlong_goal
+    #Output type:    nav_msgs/Path            goal_path
     
-    if (busy_executing_plan == True) or (busy_executing_plan == None):
-        rospy.logerr('Cancel last move_base command before execute new one!')
-    if (busy_executing_plan == False):
-        rospy.loginfo('New nav_goal received')
-        geo_goal = {'lat': msg.latitude, 'long': msg.longitude}
-        output_map_path_msg = calculate_path(gps_position, geo_goal)
+    rospy.loginfo('New latlong-coordinate goal received!')
+    goal_lat  = request.latlong_goal.latitude
+    goal_long = request.latlong_goal.longitude
+    geo_goal = {'lat': goal_lat, 'long': goal_long}
+    output_map_path_msg = calculate_path(gps_position, geo_goal)
+    return(output_map_path_msg)
 
 #============================================================================================
 
 
 
 #============================================================================================
-def map_goal_callback(msg):
+def map_goal_callback(request):
     
     #FRAME_ID OF MAP_GOAL: MAP   
-    global geo_goal_pub
-    global busy_executing_plan
+    #For GetPathMap srv
+    #Input msg type: move_base_msgs/MoveBaseActionGoal  map_goal
+    #Output type:    nav_msgs/Path                      goal_path
 
-    goal_x_map = msg.goal.target_pose.pose.position.x
-    goal_y_map = msg.goal.target_pose.pose.position.y
+    rospy.loginfo('New map-coordinate goal received!')
+    goal_x_map = request.map_goal.goal.target_pose.pose.position.x
+    goal_y_map = request.map_goal.goal.target_pose.pose.position.y
     geo_goal   = map2ll(goal_x_map, goal_y_map)
-    
-    geo_goal_msg        = NavSatFix()
-    geo_goal_msg.header = Header()
-    geo_goal_msg.header.stamp  = rospy.Time.now()
-
-    geo_goal_msg.latitude  = geo_goal['lat']
-    geo_goal_msg.longitude = geo_goal['long']
-    geo_goal_pub.publish(geo_goal_msg)
+    output_map_path_msg = calculate_path(gps_position, geo_goal)
+    return(output_map_path_msg)
     
 #============================================================================================
 
@@ -275,36 +214,12 @@ def map_goal_callback(msg):
 
 #============================================================================================
 ''' __MAIN__ '''
-
-#Just for testing purpose!!!
-global busy_executing_plan
-busy_executing_plan = False
-#--------------------------
-
-rate = rospy.Rate(5)      
-
 #--------------------------------------------------------------------------------------------        
-move_base_stt_sub = rospy.Subscriber(move_base_stt_input, GoalStatusArray,    \
-                                     move_base_stt_callback,     queue_size=1)
 gps_sub           = rospy.Subscriber(gps_position_input, NavSatFix,           \
                                      gps_coordinate_callback,    queue_size=1)
-geo_goal_sub      = rospy.Subscriber(geo_goal_input, NavSatFix,               \
-                                     geo_goal_callback,          queue_size=1)
+#--------------------------------------------------------------------------------------------  
+ll_goal_service   = rospy.Service('get_path_ll', GetPathLL, ll_goal_callback)
 #CAUTION! map_goal_sub receive MoveBaseActionGoal from move_base node! 
-#NOT FROM POINTSTAMPED RVIZ
-map_goal_sub      = rospy.Subscriber(map_goal_input, MoveBaseActionGoal,      \
-                                     map_goal_callback,           queue_size=1)
-#--------------------------------------------------------------------------------------------  
-path_pub          = rospy.Publisher(global_plan_output, Path,     queue_size=1)
-#This geo_goal_pub actually just converts map_goal_sub in Map frame above and 
-#Publish into a geo_goal_pub
-geo_goal_pub      = rospy.Publisher(geo_goal_input, NavSatFix,    queue_size=1)
-#--------------------------------------------------------------------------------------------  
-
-
-while not rospy.is_shutdown():
-    try:
-        path_pub.publish(output_map_path_msg)
-    except:
-        pass
-    rate.sleep()
+#Not from Rviz's PointStamped 
+map_goal_service  = rospy.Service('get_path_map', GetPathMap, map_goal_callback)
+rospy.spin()

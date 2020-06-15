@@ -2,20 +2,27 @@ cmake_minimum_required(VERSION 2.8.3)
 project(bugcar_google_map_global_planner)
 
 ## Compile as C++11, supported in ROS Kinetic and newer
-# add_compile_options(-std=c++11)
+add_compile_options(-std=c++11)
 
 ## Find catkin macros and libraries
 ## if COMPONENTS list like find_package(catkin REQUIRED COMPONENTS xyz)
 ## is used, also find other catkin packages
 find_package(catkin REQUIRED COMPONENTS
+  std_msgs
   actionlib_msgs
   geometry_msgs
   move_base_msgs
   nav_msgs
-  rospy
   sensor_msgs
-  std_msgs
+  rospy
+  roscpp
+  nav_core
+  pluginlib
+  costmap_2d
   tf
+  tf2
+  tf2_geometry_msgs
+  message_generation
 )
 
 ## System dependencies are found with CMake's conventions
@@ -59,11 +66,11 @@ catkin_python_setup()
 # )
 
 ## Generate services in the 'srv' folder
-# add_service_files(
-#   FILES
-#   Service1.srv
-#   Service2.srv
-# )
+add_service_files(
+   FILES
+   GetPathLL.srv
+   GetPathMap.srv
+)
 
 ## Generate actions in the 'action' folder
 # add_action_files(
@@ -73,10 +80,15 @@ catkin_python_setup()
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   actionlib_msgs#   geometry_msgs#   move_base_msgs#   nav_msgs#   sensor_msgs#   std_msgs
-# )
+generate_messages(
+   DEPENDENCIES
+   std_msgs
+   actionlib_msgs
+   geometry_msgs
+   move_base_msgs
+   nav_msgs 
+   sensor_msgs
+)
 
 ################################################
 ## Declare ROS dynamic reconfigure parameters ##
@@ -108,10 +120,10 @@ catkin_python_setup()
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
-#  LIBRARIES bugcar_google_map_global_planner
-#  CATKIN_DEPENDS actionlib_msgs geometry_msgs move_base_msgs nav_msgs rospy sensor_msgs std_msgs tf
-#  DEPENDS system_lib
+  INCLUDE_DIRS include srv
+  LIBRARIES google_planner.cpp
+  CATKIN_DEPENDS std_msgs actionlib_msgs geometry_msgs move_base_msgs nav_msgs sensor_msgs rospy roscpp tf tf2 tf2_geometry_msgs nav_core pluginlib costmap_2d message_generation
+  DEPENDS system_lib
 )
 
 ###########
@@ -121,14 +133,14 @@ catkin_package(
 ## Specify additional locations of header files
 ## Your package locations should be listed before other locations
 include_directories(
-# include
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
 ## Declare a C++ library
-# add_library(${PROJECT_NAME}
-#   src/${PROJECT_NAME}/bugcar_google_map_global_planner.cpp
-# )
+add_library(google_planner src/google_planner.cpp)
+#add_dependencies(($find ${PROJECT_NAME})/src/google_planner.cpp ${PROJECT_NAME}_generate_messages_cpp)
+#target_link_libraries(($find ${PROJECT_NAME})/src/google_planner.cpp ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
@@ -209,3 +221,5 @@ include_directories(
 
 ## Add folders to be run by python nosetests
 # catkin_add_nosetests(test)
+
+

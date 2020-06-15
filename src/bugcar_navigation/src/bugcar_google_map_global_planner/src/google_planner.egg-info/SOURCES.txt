@@ -1,0 +1,7 @@
+README.md
+setup.py
+src/google_planner.egg-info/PKG-INFO
+src/google_planner.egg-info/SOURCES.txt
+src/google_planner.egg-info/dependency_links.txt
+src/google_planner.egg-info/requires.txt
+src/google_planner.egg-info/top_level.txt
