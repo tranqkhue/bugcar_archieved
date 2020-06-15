@@ -31,9 +31,18 @@ namespace google_planner {
                           const geometry_msgs::PoseStamped& goal,
                           std::vector<geometry_msgs::PoseStamped>& google_plan,
                           std::vector<geometry_msgs::PoseStamped>& plan);
+            float calculate_distance(const geometry_msgs::PoseStamped& x1,
+                                     const geometry_msgs::PoseStamped& x2);
+            float calculate_orientation(const geometry_msgs::PoseStamped& x1,
+                                        const geometry_msgs::PoseStamped& x2);
+            void preProcessPlan(const geometry_msgs::PoseStamped& start,
+                                const geometry_msgs::PoseStamped& goal,
+                                int plan_size_);
+            void populatePlan();
+            void getHeadingRad();
 
             std::string topic_name = "GoogleMapGlobalPlanner/plan";
-            nav_msgs::Path global_plan_;
+            nav_msgs::Path global_plan_pub;
             int plan_size = 0;
             std::vector<geometry_msgs::PoseStamped> pose_google;
             ros::ServiceClient client_google;
@@ -44,7 +53,8 @@ namespace google_planner {
             bool exec_plan_ = false;
             bool got_plan_ = false;
             int count = 0;
-            float point_sep = 4;
+            float point_sep = 2.0;
+            std::vector<float> rad_heading;
 
     };
 };
