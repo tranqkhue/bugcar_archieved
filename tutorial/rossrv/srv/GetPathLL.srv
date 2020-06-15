@@ -1,0 +1,3 @@
+sensor_msgs/NavSatFix latlong_goal
+---
+nav_msgs/Path goal_path

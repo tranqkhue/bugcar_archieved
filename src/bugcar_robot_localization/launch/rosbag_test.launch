@@ -1,0 +1,163 @@
+<launch>
+    <param name="/use_sim_time" value="true" />
+    <param name="/reset_on_time_jump" value="true" />
+<!-- ========================================================================================================================================== -->
+    <node name="odom_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+        <param name="frequency" value="90"/>
+     	<param name="sensor_timeout" value="0.1"/>
+        <param name="two_d_mode" value="false" />
+
+      	<param name="map_frame" value="map"/>
+      	<param name="odom_frame" value="odom"/>
+      	<param name="base_link_frame" value="base_link"/>
+      	<param name="world_frame" value="odom"/>
+
+      	<remap from="odometry/filtered" to="odom/filtered_odom_baselink"/>
+
+
+
+      	<param name="imu0" value="imu/data"/>
+      	<rosparam param="imu0_config">[false, false, false,
+                                       false, false, false,
+                                       false, false, false,
+                                       false, false, true,
+                                       true,  false, false]</rosparam>
+
+
+       	<param name="imu0_queue_size" value="5"/>
+
+      	<param name="imu0_remove_gravitational_acceleration" value="true"/>
+
+      	<rosparam param="process_noise_covariance">[0.03, 0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0.03, 0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0.4, 0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0.03, 0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0.03, 0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0.06, 0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0.025, 0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0.025, 0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0.05, 0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0.002, 0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0.002, 0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0.004, 0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0.01, 0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0.01, 0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0.01]
+        </rosparam>
+
+     	<rosparam param="initial_estimate_covariance">[1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    1e-9, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,  0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
+        </rosparam>
+    </node>
+
+<!-- ========================================================================================================================================== -->
+
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
+	<!-- Placeholders for input remapping  -->
+    	<remap from="odometry/filtered" to="odom/filtered_map_baselink"/>
+    	<remap from="imu/data" to="imu/data"/>
+    	<remap from="gps/fix" to="gps/fix"/>
+    	<!--  Placeholder for output topic remapping  -->
+    	<remap from="odometry/gps" to="odom/transformed_gps"/>
+
+        <param name="frequency" value="30" />
+        <param name="magnetic_declination_radians" value="0.0113446401" />
+        <param name="zero_altitude" value="true" />
+        <param name="broadcast_utm_transform" value="true" />
+        <param name="publish_filtered_gps" value="true" />
+        <param name="wait_for_datum" value="true" />
+        <param name="delay" value="2" />
+        <rosparam param="datum">[11.053352, 106.665792, 0.0] </rosparam>
+
+     </node>
+
+<!-- ========================================================================================================================================== -->
+
+    <node name="map_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+        <param name="frequency" value="30"/>
+      	<param name="sensor_timeout" value="0.1"/>
+        <param name="two_d_mode" value="false"/>
+
+  	<param name="map_frame" value="map"/>
+  	<param name="odom_frame" value="odom"/>
+  	<param name="base_link_frame" value="base_link"/>
+  	<param name="world_frame" value="map"/>
+
+  	<remap from="odometry/filtered" to="odom/filtered_map_baselink"/>
+
+     	<param name="odom0" value="odom/filtered_odom_baselink"/>
+      	<rosparam param="odom0_config">[false, false, true,
+                                        false, false, false,
+                                        true,  true,  false,
+                                        false, false, true,
+                                        false, false, false]</rosparam>
+
+ 	<param name="odom1" value="odom/transformed_gps"/>
+  	<rosparam param="odom1_config">[true,  true,  false,
+                                        false, false, false,
+                                        false, false, false,
+                                        false, false, false,
+                                        false, false, false]</rosparam>
+
+      	<param name="imu0" value="imu/data"/>
+      	<rosparam param="imu0_config">[false, false, false,
+                                       true,  true,  true,
+                                       false, false, false,
+                                       false, false, false,
+                                       true,  false, false]</rosparam>
+
+ 	<param name="odom0_queue_size" value="5"/>
+   	<param name="imu0_queue_size" value="5"/>
+  	<param name="imu0_remove_gravitational_acceleration" value="false"/>
+
+      	<rosparam param="process_noise_covariance">[0.03, 0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0.03, 0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0.4, 0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0.03, 0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0.03, 0,    0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0.06, 0,     0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0.025, 0,     0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0.025, 0,    0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0.05, 0,     0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0.002, 0,     0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0.002, 0,     0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0.004, 0,    0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0.01, 0,    0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0.01, 0,
+                                                    0,    0,    0,   0,    0,    0,    0,     0,     0,    0,     0,     0,     0,    0,    0.01]
+        </rosparam>
+
+     	<rosparam param="initial_estimate_covariance">[1e-9, 0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    1e-9, 0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    1e-9, 0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    1e-9, 0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    1e-9, 0,    0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    1e-9, 0,    0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    1e-9, 0,    0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    1e-9, 0,    0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    1e-9, 0,     0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    1e-9,  0,     0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     1e-9,  0,     0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     1e-9,  0,    0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     1e-9, 0,    0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    1e-9, 0,
+                                                       0,    0,    0,    0,    0,    0,    0,    0,    0,    0,     0,     0,     0,    0,    1e-9]
+         </rosparam>  
+    </node>
+
+<!-- ========================================================================================================================================== -->
+
+</launch>
