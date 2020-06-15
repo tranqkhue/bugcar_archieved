@@ -120,7 +120,7 @@ generate_messages(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-  INCLUDE_DIRS include srv
+  INCLUDE_DIRS include
   LIBRARIES google_planner.cpp
   CATKIN_DEPENDS std_msgs actionlib_msgs geometry_msgs move_base_msgs nav_msgs sensor_msgs rospy roscpp tf tf2 tf2_geometry_msgs nav_core pluginlib costmap_2d message_generation
   DEPENDS system_lib
