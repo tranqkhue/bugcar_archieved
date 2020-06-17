@@ -12,6 +12,8 @@
 		<param name="base_global_planner" value="fake_planner/FakePlanner" />
     		<param name="controller_frequency" value="10.0" />
 		<param name="odom_topic" value="odometry/filtered_odom_baselink" />
+
+		<remap from="cmd_vel" to="move_base/cmd_vel" />
 	</node>
 
 </launch>

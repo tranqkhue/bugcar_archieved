@@ -33,11 +33,11 @@ namespace fake_planner{
         geometry_msgs::PoseStamped waypoint;
         double a_ = 0.0;
         rand_waypoint.push_back(start);
-        for(int i = 1; i <= random_samples; ++i){
+        for(int i = 0; i <= random_samples; ++i){
             a_ = a + (rand()%2-1)*((float)(rand()%157)/100.0);
             way_point_orientation.push_back(a_);
-            waypoint.pose.position.x = start.pose.position.x + delta*i;
-            waypoint.pose.position.y = start.pose.position.y + tan(a_)*delta*i;
+            waypoint.pose.position.x = start.pose.position.x + cos(a_)*delta*(i+1);
+            waypoint.pose.position.y = start.pose.position.y + sin(a_)*delta*(i+1);
 
             waypoint.pose.orientation.x = 0;
             waypoint.pose.orientation.y = 0;
