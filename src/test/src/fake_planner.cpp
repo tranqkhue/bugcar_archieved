@@ -57,21 +57,27 @@ namespace fake_planner{
         std::vector<geometry_msgs::PoseStamped> dummy_plan;
         geometry_msgs::PoseStamped dummy_point;
         float dist;
+        float delta_x;
+        float delta_y;
         int insert_point;
 
         for(int i = 0; i < rand_waypoint.size()-1; ++i){
             dummy_plan.push_back(rand_waypoint[i]);
-            dist = sqrt(pow(rand_waypoint[i].pose.position.x -rand_waypoint[i+1].pose.position.x,2)
-                       +pow(rand_waypoint[i].pose.position.y- rand_waypoint[i+1].pose.position.y,2));
+            delta_x = rand_waypoint[i+1].pose.position.x -rand_waypoint[i].pose.position.x;
+            delta_y = rand_waypoint[i+1].pose.position.y- rand_waypoint[i].pose.position.y;
+            dist = sqrt(pow(delta_x,2) + pow(delta_y,2));
             ROS_INFO("Distance between waypoint %d and %d is %f",i,i+1,dist);
             insert_point = floor(dist/delta);
             if (insert_point>=1){
                 ROS_INFO("Adding %d points between waypoint %d and %d", insert_point-1,i,i+1);
-                for(int j = 1; j < insert_point; ++j){
-                    dummy_point.pose.position.x = rand_waypoint[i].pose.position.x + delta*j;
-                    dummy_point.pose.position.y = rand_waypoint[i].pose.position.y + tan(way_point_orientation[i])*delta*j;
+                delta_x = delta_x/dist;
+                delta_y = delta_y/dist;
+                for(int j = 0; j < insert_point; ++j){
+                    dummy_point.pose.position.x = rand_waypoint[i].pose.position.x + delta_x*delta*(j+1);
+                    dummy_point.pose.position.y = rand_waypoint[i].pose.position.y + delta_y*delta*(j+1);
                     
-                    dummy_point.pose.orientation = rand_waypoint[i].pose.orientation;
+                    dummy_point.pose.orientation.z = sin(atan2(delta_y,delta_x)/2);
+                    dummy_point.pose.orientation.w = cos(atan2(delta_y,delta_x)/2);
 
                     dummy_plan.push_back(dummy_point);
                 }

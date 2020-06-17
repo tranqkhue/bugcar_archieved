@@ -35,7 +35,7 @@ namespace fake_planner{
             ros::Publisher pub_points;
             std::vector<geometry_msgs::PoseStamped> rand_waypoint;
             std::vector<double> way_point_orientation;
-            float delta = 4;     
+            float delta = 2;     
     };
 };
 
