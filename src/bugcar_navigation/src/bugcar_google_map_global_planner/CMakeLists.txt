@@ -139,8 +139,8 @@ include_directories(
 
 ## Declare a C++ library
 add_library(google_planner src/google_planner.cpp)
-#add_dependencies(($find ${PROJECT_NAME})/src/google_planner.cpp ${PROJECT_NAME}_generate_messages_cpp)
-#target_link_libraries(($find ${PROJECT_NAME})/src/google_planner.cpp ${catkin_LIBRARIES})
+add_dependencies(google_planner ${PROJECT_NAME}_generate_messages_cpp)
+target_link_libraries(google_planner ${catkin_LIBRARIES})
 
 ## Add cmake target dependencies of the library
 ## as an example, code may need to be generated before libraries
