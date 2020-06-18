@@ -12,7 +12,7 @@ topics:
   timeout : 0.5
   priority: 10
 -
-  name    : tx navigation
-  topic   : tx/cmd_vel
+  name    : rc navigation
+  topic   : rc_controller/cmd_vel
   timeout : 0.5
   priority: 100

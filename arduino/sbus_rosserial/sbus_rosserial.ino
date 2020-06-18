@@ -69,6 +69,7 @@ void loop() {
       rc_status.key = "SIGNAL_LOSS";
       cmd_vel.linear.x = 0;
       cmd_vel.angular.z = 0;
+      rc_cmd.publish(&cmd_vel);
     }
 
     else {
