@@ -11,6 +11,7 @@
 
 	<include file="$(find diff_drive)/launch/gazebo.launch">
  		<arg name="model" value="$(arg model)"/>
+		<remap from="/tf" to="/tf_gazebo"/>
  	</include>
 
 	<node name="rviz" pkg="rviz" type="rviz" args="-d $(arg rvizconfig)"/>
@@ -23,7 +24,8 @@
 
 	<!-- load the controllers -->
 
-	<node name="robot_arm_controller_spawner" pkg="controller_manager" type="spawner" respawn="true" output="screen" 
+	<node name="robot_arm_controller_spawner" pkg="controller_manager"
+ type="spawner" respawn="true" output="screen" 
 	 args="/Diff_Drive/joint_state_controller
       		/Diff_Drive/diff_drive_controller
         	--shutdown-timeout 3"/>  
@@ -42,42 +44,7 @@
 	<!-- localization section -->
 	<!-- =============================================================== -->
 
-	<rosparam command="load" file="$(find robot_localization)/params/dual_ekf_navsat.yaml" />
-	
-	<!-- ekf odom node -->
-	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_odom" clear_params="true">
-
-	    <!--  Placeholder for input topic remapping  -->
-	    <remap from="odometry/wheel" to="Diff_Drive/diff_drive_controller/odom"/>
-	    <remap from="imu/data" to="imu"/>
-	    <!--  Placeholder for output topic remapping  -->
-	    <remap from="odometry/filtered" to="odometry/filtered_odom_baselink"/>
-
-	</node>
-
-	<!-- navsat transform node -->
-	<node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
-
-	<!-- Placeholders for input remapping  -->
-    	<remap from="odometry/filtered" to="odometry/filtered_map_baselink"/>
-    	<remap from="imu/data" to="imu"/>
-    	<remap from="gps/fix" to="fix"/>
-    	<!--  Placeholder for output topic remapping  -->
-    	<remap from="odometry/gps" to="odometry/gps_transformed_to_map"/>
-
-  	</node>
-
-	<!-- ekf map node -->
-  	<node pkg="robot_localization" type="ekf_localization_node" name="ekf_se_map" clear_params="true">
-
-	    <!--  Placeholder for input topic remapping  -->
-	    <remap from="odometry/wheel" to="odometry/filtered_odom_baselink"/>
-	    <remap from="odometry/gps" to="odometry/gps_transformed_to_map"/>
-	    <remap from="imu/data" to="imu"/>
-	    <!--  Placeholder for output topic remapping  -->
-	    <remap from="odometry/filtered" to="odometry/filtered_map_baselink"/>
-
-  	</node>
+	<include file="$(find robot_localization)/launch/simulation.launch"/>
 
 </launch>
 
