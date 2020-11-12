@@ -1,8 +1,10 @@
 # roboclaw_ros
-This is the duplication of the [bugs-fixed roboclaw_ros](https://github.com/gnuoyohes/roboclaw_ros)
+[![Build Status](https://travis-ci.org/sonyccd/roboclaw_ros.svg?branch=master)](https://travis-ci.org/sonyccd/roboclaw_ros)
+[![Codacy Badge](https://api.codacy.com/project/badge/Grade/6f65acd1242e4a0582ecb04c7cc70f68)](https://www.codacy.com/app/snakes-in-the-box/roboclaw_ros?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=sonyccd/roboclaw_ros&amp;utm_campaign=Badge_Grade)
 
-## How to calculate "ticks_per_meter" param?
-4*(encoder_pulse_per_round)/(wheel_diameter*pi)
+This is the ROS driver for the Roboclaw motor controllers made by [Ion Motion Control](http://www.ionmc.com/).
+
+#HELP: I have been busy with another project that is not using robo claw. Message me if you want to become a contributer and help keep this thing alive!
 
 ## Before you begin
 Before you use this package you need to calibrate the velocity PID on the Roboclaw.  This will requare the
@@ -31,7 +33,7 @@ be manually set for the motor before starting. Autotune functions usually return
 values but in most cases you will still need to manually adjust them for optimum performance.
 
 ## Usage
-Just clone the repo into your catkin workspace. It contains the ROS package and the motor controller driver.  Remember to make sure ROS has permissions to use the dev port you give it.
+Just clone the repo into your catkin workspace. It contains the ROS package and the motor controller driver.  Remmeber to make sure ROS has permisions to use the dev port you give it.
 ```bash
 cd <workspace>/src
 git clone https://github.com/sonyccd/roboclaw_ros.git
@@ -50,20 +52,16 @@ The launch file can be configure at the command line with arguments, by changing
 |baud|115200|Baud rate the Roboclaw is configured for|
 |address|128|The address the Roboclaw is set to, 128 is 0x80|
 |max_speed|2.0|Max speed allowed for motors in meters per second|
-|ticks_per_meter|1833.5|The number of encoder ticks per meter of movement|
-|base_width|0.39|Width from one wheel edge to another in meters|
-|publish_tf|false|Publish odom->base_link transform if set to true|
-|pub_odom|true|Publishes Odometry if set to true|
-|stop_movement|true|Stops movement if no velocity commands are received for 1 sec|
+|ticks_per_meter|4342.2|The number of encoder ticks per meter of movement|
+|base_width|0.315|Width from one wheel edge to another in meters|
 
 ## Topics
-### Subscribed
+###Subscribed
 /cmd_vel [(geometry_msgs/Twist)](http://docs.ros.org/api/geometry_msgs/html/msg/Twist.html)  
 Velocity commands for the mobile base.
-
-### Published
+###Published
 /odom [(nav_msgs/Odometry)](http://docs.ros.org/api/nav_msgs/html/msg/Odometry.html)  
 Odometry output from the mobile base.
 
-## IF SOMETHING IS BROEKN:
+#IF SOMETHING IS BROEKN:
 Please file an issue, it makes it far easier to keep track of what needs to be fixed. It also allows others that might have solved the problem to contribute.  If you are confused feel free to email me, I might have overlooked something in my readme.
