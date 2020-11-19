@@ -18,14 +18,16 @@ obstacle_layer:
  combination_method: 1
 
  observation_sources: laser_scan_sensor
- laser_scan_sensor: {data_type: LaserScan, topic: scan, marking: true, clearing: true}
+ laser_scan_sensor: {data_type: LaserScan, topic: hokuyo_scan, marking: true, clearing: true}
 
 
 inflation_layer:
   enabled:              true
   cost_scaling_factor:  10.0  # exponential rate at which the obstacle cost drops off (default: 10)
-  inflation_radius:     0.5  # max. distance from an obstacle at which costs are incurred for planning paths.
+  inflation_radius:     2  # max. distance from an obstacle at which costs are incurred for planning paths.
 
-static_layer:
-  enabled:              true
-  map_topic:            "/map"
+occupancy_grid:
+  track_unknown: true
+  inflation_radius: 2
+  static_sources: dfasfsda
+  dfasfsda: {msg_type: OccupancyGrid, topic: /map/abc, enable_publish: true}

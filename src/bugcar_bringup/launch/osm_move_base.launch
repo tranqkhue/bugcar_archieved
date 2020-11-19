@@ -1,4 +1,6 @@
 <launch>
+	
+	<arg name="osm_map_path" default="$(find bugcar_bringup)/osm/map(2).osm"/>
 
         <!--  ************** Navigation ***************  -->
 	<node pkg="move_base" type="move_base" respawn="false" name="move_base" output="screen">
@@ -7,14 +9,15 @@
   		<rosparam file="$(find bugcar_bringup)/cfg/move_base/local_costmap_params.yaml" command="load" />
   		<rosparam file="$(find bugcar_bringup)/cfg/move_base/global_costmap_params.yaml" command="load" />
   		<rosparam file="$(find bugcar_bringup)/cfg/move_base/teb_local_planner_params.yaml" command="load"/>
-		<rosparam file="$(find bugcar_bringup)/cfg/move_base/google_planner_params.yaml" command="load" />
+		<rosparam file="$(find bugcar_bringup)/cfg/move_base/osm_planner_params.yaml" command="load" />
 
 		<param name="base_local_planner" value="teb_local_planner/TebLocalPlannerROS" />
-		<param name="base_global_planner" value="google_planner/GooglePlanner" />
+		<param name="base_global_planner" value="osm_planner/Planner" />
     		<param name="controller_frequency" value="10.0" />
 		<param name="odom_topic" value="odometry/filtered_odom_baselink" />
+		<param name="Planner/osm_map_path" value="$(arg osm_map_path)" />
 
-	
+		<remap from="cmd_vel" to="move_base/cmd_vel" />
 
 	</node>
 

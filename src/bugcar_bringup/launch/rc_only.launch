@@ -1,6 +1,11 @@
 <launch>
 
-	<include file="$(find roboclaw_node)/launch/roboclaw.launch" />
-	<node pkg="rosserial_python" type="serial_node.py" name="rc_node" />
+	<include file="$(find roboclaw_node)/launch/roboclaw.launch" >
+	    <arg name="dev" value="/dev/ttyUSB_roboclaw"/>
+	    <arg name="baud" value="115200"/>
+	</include>
+
+	<include file="$(find twist_mux)/launch/simple_twist_mux.launch" />
+	<node pkg="rosserial_python" type="serial_node.py" name="rc_node" output="screen" args="-port /dev/ttyUSB_arduino -baud 115200"/>
 
 </launch>

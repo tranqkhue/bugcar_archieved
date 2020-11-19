@@ -1,29 +1,23 @@
-# Assign fixed device to static USB port
- - **REFERENCE:** https://www.domoticz.com/wiki/Assign_fixed_device_name_to_USB_port
- - Get USB port currently being used by the device: 
- 	- **~$ dmesg | grep tty**
+# Bugcar Start Sequence
+ - Launch rc_node only:
+	- roslaunch bugcar_bringup rc_only.launch
+ - Launch standard localization:
+	- roslaunch bugcar_bringup test_run_rc.launch
+ - Launch map_viz node:
+	- roslaunch bugcar_mapviz mapviz.launch
+ - Launch move_base node:
+	- roslaunch bugcar_bringup osm_move_base.launch
+ 
+ - **IMPORTANT:**
+	- Check covariance of gps (rostopic echo gps/fix)
+	- Check if move\_base/cmd\_vel and rc\_controller/cmd_vel are running
+	- Check if twist\_mux has already subscribed to move\_base/cmd\_vel and rc\_controller/cmd_vel
 
- - Check device attributes, replace PORT with the usb port the device is using:
- 	- **~$ udevadm info --name=PORT --attribute-walk**
+- **MISC**
+	- If the roadmap is not loaded properly in rviz, reset rviz and relaunch move_base node
+	- Open rviz with the config file located at bugcar/bugcar_bringup/cfg/viz/RvizConfig.rviz
+	- Open mapviz with the config file located at bugcar/bugcar_bringup/cfg/viz/bugcar.mvc
+	- Make sure there is Internet Connection to use mapviz
+	- If mapviz does not load properly, relaunch mapviz node
+	- Param files are (mostly) located in bugcar/bugcar\_bringup/cfg/move_base
 
- 	- **IMPORTANT**: Take note of values of 
-		- **SUBSYSTEM** 
-		- **ATTRS{idVendor}**
-		- **ATTRS{idProduct}**
-		- **ATTRS{serial}**
-
- - Writing new udev rules:
-	- Using Vim to edit:
-		- **~$ sudo vi /etc/udev/rules.d/10-usb-serial.rules**
-	- Write the following line for each devie, replace the appropriate value for each attributes:
-		- **SUBSYSTEM=="TYPE", ATTRS{idVendor}=="ID_VENDOR", ATTRS{idProduct}=="ID_PRODUCT", ATTRS{serial}=="SERIAL",  SYMLINK+="NEW_PORT_NAME"**
-
- - Load new rule:
-	- **~$ sudo udevadm control --reload-rules**
-
- - Reboot system and verify:
-	- **~$ sudo reboot**
-	- __~$ ls -l /dev/tty*__ 
-	- (see expected results in reference)
-
- - Repeat step two for the new ports and check if the attributes of device match.
