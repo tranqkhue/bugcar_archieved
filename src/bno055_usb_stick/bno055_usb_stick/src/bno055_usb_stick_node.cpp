@@ -57,6 +57,7 @@ int main(int argc, char *argv[]) {
 
   // load parameters
   pose_frame_id = ros::param::param< std::string >("~pose_frame_id", "fixed");
+  std::string imu_pub_topic = ros::param::param<std::string>("~topic","imu");
   const bool publish_tf(ros::param::param("~publish_tf", false));
   tf_frame_id = ros::param::param< std::string >("~tf_frame_id", "fixed");
   tf_child_frame_id = ros::param::param< std::string >("~tf_child_frame_id", "bno055");
@@ -64,7 +65,7 @@ int main(int argc, char *argv[]) {
 
   // setup publishers
   out_pub = nh.advertise< bno055_usb_stick_msgs::Output >("bno055/output", 1);
-  imu_pub = nh.advertise< sensor_msgs::Imu >("imu", 1);
+  imu_pub = nh.advertise< sensor_msgs::Imu >(imu_pub_topic, 1);
   pose_pub = nh.advertise< geometry_msgs::PoseStamped >("pose", 1);
   mag_pub = nh.advertise< sensor_msgs::MagneticField >("magnetic_field", 1);
   temp_pub = nh.advertise< sensor_msgs::Temperature >("temperature", 1);

@@ -342,6 +342,8 @@ if __name__ == "__main__":
     try:
         node = Node()
         node.run()
-    except rospy.ROSInterruptException:
+    except rospy.ROSInterruptException and SystemExit:
+        rospy.logwarn("Yoyoyoyoyoyoyo")
+        node.roboclaw._port.close()
         pass
     rospy.loginfo("Exiting")

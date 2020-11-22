@@ -81,7 +81,7 @@ void loop() {
       else if (abs(switch_1 - tx_threshold) < 10 && abs(switch_2 - tx_threshold) < 10) {
         if ((ch1 > ch_1_min) and (ch2 > ch_2_min)) {
           vel_forward = (float)round(map(ch1, 1000, 2000, 0 , 1200) / 25) / 40;
-          angular_speed = (float)round(map(ch2, 1000, 2000, -157, 157) / 10) / 10;
+          angular_speed = -(float)round(map(ch2, 1000, 2000, -200, 200) / 10) / 10;
           cmd_vel.linear.x = vel_forward;
           cmd_vel.angular.z = angular_speed;
           rc_cmd.publish(&cmd_vel);

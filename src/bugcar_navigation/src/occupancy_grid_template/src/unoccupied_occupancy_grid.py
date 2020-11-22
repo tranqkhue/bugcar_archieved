@@ -13,25 +13,26 @@ from geometry_msgs.msg import Quaternion
 
 rospy.init_node("free_local_occupancy_grid")
 
-map_topic = "map/free_local_occupancy_grid"
-OG_publisher = rospy.Publisher(map_topic, OccupancyGrid, queue_size=5, latch=True)
+OG_publisher = rospy.Publisher("/map/abc", OccupancyGrid, queue_size=1)
 
 MAP_RESOLUTION = 0.1    #Unit: Meter
-MAP_SIZE       = 6     #Unit: Meter, Shape: Square with center "base_link"
+MAP_SIZE       = 10     #Unit: Meter, Shape: Square with center "base_link"
 
 map_img = np.zeros([int(MAP_SIZE/MAP_RESOLUTION),int(MAP_SIZE/MAP_RESOLUTION),1], \
                     dtype=np.uint8)
 occupancy_grid = map_img.flatten()
 occupancy_grid = occupancy_grid.tolist()
+for i in range(len(occupancy_grid)):
+    occupancy_grid[i] = 0
 
 map_msg = OccupancyGrid()
 
 map_msg.header = Header()
 map_msg.header.frame_id = "base_link"
-map_msg.header.stamp    = rospy.Time.now()
+map_msg.header.stamp    = rospy.get_rostime()
 
-map_msg.info= MapMetaData()
-map_msg.info.map_load_time = rospy.Time.now()
+map_msg.info = MapMetaData()
+map_msg.info.map_load_time = rospy.get_rostime()
 map_msg.info.height = MAP_SIZE/MAP_RESOLUTION      #Unit: Pixel
 map_msg.info.width  = MAP_SIZE/MAP_RESOLUTION      #Unit: Pixel
 map_msg.info.resolution = MAP_RESOLUTION
@@ -47,9 +48,11 @@ map_msg.info.origin.orientation.y = 0
 map_msg.info.origin.orientation.z = 0
 map_msg.info.origin.orientation.w = 1
 
-map_msg.data.extend(occupancy_grid)
+map_msg.data = occupancy_grid
 
 rate = rospy.Rate(10)      
-while not rospy.is_shutdown():
+while True:
+    map_msg.header.stamp    = rospy.get_rostime()
+    map_msg.info.map_load_time = rospy.get_rostime()
     OG_publisher.publish(map_msg)
     rate.sleep()

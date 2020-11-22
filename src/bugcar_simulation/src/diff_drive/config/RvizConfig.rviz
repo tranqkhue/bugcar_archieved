@@ -6,9 +6,12 @@ Panels:
       Expanded:
         - /Global Options1
         - /Status1
-        - /RobotModel1
+        - /TF1/Frames1
         - /Odometry2/Shape1
-        - /Map1
+        - /Marker1
+        - /Marker1/Status1
+        - /Marker1/Namespaces1
+        - /Path2/Offset1
       Splitter Ratio: 0.5
     Tree Height: 579
   - Class: rviz/Selection
@@ -29,7 +32,7 @@ Panels:
     Experimental: false
     Name: Time
     SyncMode: 0
-    SyncSource: LaserScan
+    SyncSource: ""
 Preferences:
   PromptSaveOnExit: true
 Toolbars:
@@ -77,8 +80,8 @@ Visualization Manager:
       Frames:
         All Enabled: false
         base_link:
-          Value: false
-        hokuyo_sensor:
+          Value: true
+        camera_link:
           Value: false
         left_back_wheel:
           Value: false
@@ -101,8 +104,8 @@ Visualization Manager:
         right_front_wheel1:
           Value: false
         utm:
-          Value: false
-      Marker Scale: 0.5
+          Value: true
+      Marker Scale: 40
       Name: TF
       Show Arrows: true
       Show Axes: true
@@ -111,7 +114,7 @@ Visualization Manager:
         map:
           odom:
             base_link:
-              hokuyo_sensor:
+              camera_link:
                 {}
               left_back_wheel:
                 left_back_wheel1:
@@ -217,9 +220,8 @@ Visualization Manager:
       Marker Topic: /move_base/TebLocalPlannerROS/teb_markers
       Name: Marker
       Namespaces:
-        PointObstacles: true
-        RobotFootprintModel: true
         TebContainer: true
+        ViaPoints: true
       Queue Size: 100
       Value: true
     - Alpha: 1
@@ -237,9 +239,9 @@ Visualization Manager:
       Enabled: true
       Invert Rainbow: false
       Max Color: 255; 255; 255
-      Max Intensity: 0
+      Max Intensity: -999999
       Min Color: 0; 0; 0
-      Min Intensity: 0
+      Min Intensity: 999999
       Name: LaserScan
       Position Transformer: XYZ
       Queue Size: 10
@@ -261,6 +263,75 @@ Visualization Manager:
       Topic: /move_base/local_costmap/costmap
       Unreliable: false
       Use Timestamp: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 25; 255; 0
+      Enabled: true
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: Arrows
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /move_base/Planner/shortest_path
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1000
+      Class: rviz/Path
+      Color: 255; 255; 255
+      Enabled: true
+      Head Diameter: 0.30000001192092896
+      Head Length: 0.20000000298023224
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 255; 85; 255
+      Pose Style: None
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.10000000149011612
+      Shaft Length: 0.10000000149011612
+      Topic: /move_base/Planner/route_network
+      Unreliable: false
+      Value: true
+    - Alpha: 1
+      Buffer Length: 1
+      Class: rviz/Path
+      Color: 5; 243; 254
+      Enabled: true
+      Head Diameter: 0
+      Head Length: 0
+      Length: 0.30000001192092896
+      Line Style: Lines
+      Line Width: 0.029999999329447746
+      Name: Path
+      Offset:
+        X: 0
+        Y: 0
+        Z: 0
+      Pose Color: 5; 243; 254
+      Pose Style: Arrows
+      Radius: 0.029999999329447746
+      Shaft Diameter: 0.5
+      Shaft Length: 1
+      Topic: /move_base/TebLocalPlannerROS/local_plan
+      Unreliable: false
       Value: true
   Enabled: true
   Global Options:
@@ -289,26 +360,21 @@ Visualization Manager:
   Value: true
   Views:
     Current:
-      Class: rviz/Orbit
-      Distance: 7.096010684967041
+      Angle: 0
+      Class: rviz/TopDownOrtho
       Enable Stereo Rendering:
         Stereo Eye Separation: 0.05999999865889549
         Stereo Focal Distance: 1
         Swap Stereo Eyes: false
         Value: false
-      Focal Point:
-        X: 0.09875021129846573
-        Y: -0.1986575573682785
-        Z: 0.12809637188911438
-      Focal Shape Fixed Size: true
-      Focal Shape Size: 0.05000000074505806
       Invert Z Axis: false
       Name: Current View
       Near Clip Distance: 0.009999999776482582
-      Pitch: 0.8503974080085754
+      Scale: 9.180985450744629
       Target Frame: <Fixed Frame>
-      Value: Orbit (rviz)
-      Yaw: 5.7585859298706055
+      Value: TopDownOrtho (rviz)
+      X: 15.561586380004883
+      Y: 95.94976806640625
     Saved: ~
 Window Geometry:
   Displays:

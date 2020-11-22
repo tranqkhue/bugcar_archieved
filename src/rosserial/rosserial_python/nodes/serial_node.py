@@ -48,8 +48,8 @@ if __name__=="__main__":
     rospy.init_node("serial_node")
     rospy.loginfo("ROS Serial Python Node")
 
-    port_name = rospy.get_param('~port','/dev/ttyUSB1')
-    baud = int(rospy.get_param('~baud','115200'))
+    port_name = rospy.get_param('~/port','/dev/ttyUSB1')
+    baud = int(rospy.get_param('~/baud','115200'))
 
     # for systems where pyserial yields errors in the fcntl.ioctl(self.fd, TIOCMBIS, \
     # TIOCM_DTR_str) line, which causes an IOError, when using simulated port
@@ -60,11 +60,11 @@ if __name__=="__main__":
     fork_server = rospy.get_param('/rosserial_embeddedlinux/fork_server', False)
 
     # TODO: do we really want command line params in addition to parameter server params?
-    sys.argv = rospy.myargv(argv=sys.argv)
-    if len(sys.argv) >= 2 :
-        port_name  = sys.argv[1]
-    if len(sys.argv) == 3 :
-        tcp_portnum = int(sys.argv[2])
+    for i in range(len(sys.argv)):
+        if sys.argv[i] == '-port' and len(sys.argv) >= i+1:
+            port_name = sys.argv[i+1]
+        if sys.argv[i] == '-baud' and len(sys.argv) >= i+1:
+            baud = int(sys.argv[i+1])
 
     if port_name == "tcp" :
         server = RosSerialServer(tcp_portnum, fork_server)
@@ -87,7 +87,8 @@ if __name__=="__main__":
             try:
                 client = SerialClient(port_name, baud, fix_pyserial_for_test=fix_pyserial_for_test)
                 client.run()
-            except KeyboardInterrupt:
+            except KeyboardInterrupt and SystemExit:
+                client.port.close()
                 break
             except SerialException:
                 sleep(1.0)

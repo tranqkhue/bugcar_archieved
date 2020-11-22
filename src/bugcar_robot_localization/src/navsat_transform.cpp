@@ -204,6 +204,7 @@ namespace RobotLocalization
       if (publish_gps_)
       {
         sensor_msgs::NavSatFix odom_gps;
+	odom_gps.header.frame_id = "base_link";
         if (prepareFilteredGps(odom_gps))
         {
           filtered_gps_pub_.publish(odom_gps);

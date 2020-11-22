@@ -19,6 +19,11 @@
 <xacro:property name="deg_to_rad" value="0.017453"/>
 <xacro:property name="PI" value="3.14"/>
 
+<!-- origin property -->
+<xacro:property name="origin_x" value="0.0"/>
+<xacro:property name="origin_y" value="10.0"/>
+<xacro:property name="origin_z" value="0.0"/>
+
 <!-- base_link property -->
 <xacro:property name="base_link_len" value=".19"/>
 <xacro:property name="base_link_width" value=".19"/>
@@ -165,74 +170,97 @@
 <xacro:wheel prefix="left" suffix="back" X="0" Y="1" Z="1"/>
 
 
-<!--///////////////////////////////////////////////////////////////// -->
-<link name="hokuyo_sensor">
-  <visual>
-    <origin xyz="0 0 0" rpy="0 0 0"/>
-   <geometry>
-     <box size="0.05 0.05 0.05"/>
-   </geometry>
-   <material name="Blue"/>
-   </visual>
- </link>
-
-<joint name="hokuyo_joint" type="fixed">
-  <origin xyz="0.07 0 0.08" rpy="0 0 0"/>
-  <parent link="base_link"/>
-  <child link="hokuyo_sensor"/>
-</joint>
-
-<gazebo reference="hokuyo_sensor">
-  <material>Gazebo/Blue</material>
-  <turnGravityOff>false</turnGravityOff>
-  <sensor type="ray" name="base_link_hokuyo_sensor">
-   <pose>0.025 0 0 0 0 0</pose>
-   <visualize>false</visualize>
-   <update_rate>40</update_rate>
-   <ray>
-     <scan>
-       <horizontal>
-         <samples>720</samples>
-         <resolution>1</resolution>
-         <min_angle>-1.57</min_angle>
-         <max_angle>1.57</max_angle>  
-        </horizontal>
-      </scan>
-     <range>
-        <min>0.10</min>
-        <max>50.0</max>
-        <resolution>0.001</resolution>
-      </range>
-     </ray>
-     <plugin name="gazebo_ros_head_hokuyo_controller" 
-          filename="libgazebo_ros_laser.so">
-        <topicName>/scan</topicName>
-        <frameName>hokuyo_sensor</frameName>
-       </plugin>
-      </sensor>
-     </gazebo>   
-
+<!--//////////////////// IMU Sensor //////////////////// -->
 <gazebo reference="base_link">
-<gravity>true</gravity>
-<sensor name="imu_sensor" type="imu">
-  <always_on>true</always_on>
-  <update_rate>100</update_rate>
-  <visualize>true</visualize>
-  <topic>__default_topic__</topic>
-  <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
-    <topicName>imu</topicName>
-    <bodyName>imu_link</bodyName>
-    <updateRateHZ>10.0</updateRateHZ>
-    <gaussianNoise>0.01</gaussianNoise>
-    <xyzOffset>0 0 0</xyzOffset>
-    <rpyOffset>0 0 0</rpyOffset>
-    <frameName>base_link</frameName>
-  </plugin> 
-</sensor>
+  <gravity>true</gravity>
+  <sensor name="imu_sensor" type="imu">
+    <always_on>true</always_on>
+    <update_rate>100</update_rate>
+    <visualize>true</visualize>
+    <topic>__default_topic__</topic>
+    <plugin filename="libgazebo_ros_imu_sensor.so" name="imu_plugin">
+      <topicName>imu</topicName>
+      <bodyName>imu_link</bodyName>
+      <updateRateHZ>10.0</updateRateHZ>
+      <gaussianNoise>0.01</gaussianNoise>
+      <xyzOffset>0 0 0</xyzOffset>
+      <rpyOffset>0 0 0</rpyOffset>
+      <frameName>base_link</frameName>
+    </plugin> 
+  </sensor>
 </gazebo>
 
+<!--///////////////// RGB Camera ///////////////////-->
+<link name="camera_link">
+  <collision>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+  <box size="0.05 0.05 0.05"/>
+    </geometry>
+  </collision>
 
-      <!-- GPS Sensor -->
+  <visual>
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <geometry>
+  <box size="0.05 0.05 0.05"/>
+    </geometry>
+    <material name="red"/>
+  </visual>
+
+  <inertial>
+    <mass value="1e-5" />
+    <origin xyz="0 0 0" rpy="0 0 0"/>
+    <inertia ixx="1e-6" ixy="0" ixz="0" iyy="1e-6" iyz="0" izz="1e-6" />
+  </inertial>
+</link>
+
+<joint name="camera_joint" type="fixed">
+  <origin xyz="0.07 0 0.07" rpy="0 0 0"/>
+  <parent link="base_link"/>
+  <child link="camera_link"/>
+</joint>
+
+<gazebo reference="camera_link">
+    <sensor type="camera" name="camera1">
+      <update_rate>30.0</update_rate>
+      <camera name="head">
+        <horizontal_fov>1.3962634</horizontal_fov>
+        <image>
+          <width>800</width>
+          <height>800</height>
+          <format>R8G8B8</format>
+        </image>
+        <clip>
+          <near>0.02</near>
+          <far>300</far>
+        </clip>
+        <noise>
+          <type>gaussian</type>
+          <!-- Noise is sampled independently per pixel on each frame.
+               That pixel's noise value is added to each of its color
+               channels, which at that point lie in the range [0,1]. -->
+          <mean>0.0</mean>
+          <stddev>0.007</stddev>
+        </noise>
+      </camera>
+      <plugin name="camera_controller" filename="libgazebo_ros_camera.so">
+        <alwaysOn>true</alwaysOn>
+        <updateRate>0.0</updateRate>
+        <cameraName>rrbot/camera1</cameraName>
+        <imageTopicName>image_raw</imageTopicName>
+        <cameraInfoTopicName>camera_info</cameraInfoTopicName>
+        <frameName>base_link</frameName>
+        <hackBaseline>0.07</hackBaseline>
+        <distortionK1>0.0</distortionK1>
+        <distortionK2>0.0</distortionK2>
+        <distortionK3>0.0</distortionK3>
+        <distortionT1>0.0</distortionT1>
+        <distortionT2>0.0</distortionT2>
+      </plugin>
+    </sensor>
+  </gazebo>
+
+<!--/////////////////////// GPS Sensor /////////////////////////////-->
 <gazebo>
   <plugin name="novatel_gps_sim" filename="libhector_gazebo_ros_gps.so">
     <alwaysOn>1</alwaysOn>

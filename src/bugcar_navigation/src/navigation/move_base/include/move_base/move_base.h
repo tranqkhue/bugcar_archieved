@@ -49,6 +49,7 @@
 #include <nav_core/base_global_planner.h>
 #include <nav_core/recovery_behavior.h>
 #include <geometry_msgs/PoseStamped.h>
+#include <geometry_msgs/PointStamped.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
 #include <nav_msgs/GetPlan.h>
@@ -158,6 +159,8 @@ namespace move_base {
 
       void goalCB(const geometry_msgs::PoseStamped::ConstPtr& goal);
 
+      void point_goalCB(const geometry_msgs::PointStamped::ConstPtr& point_goal);
+
       void planThread();
 
       void executeCb(const move_base_msgs::MoveBaseGoalConstPtr& move_base_goal);
@@ -195,7 +198,7 @@ namespace move_base {
       uint32_t planning_retries_;
       double conservative_reset_dist_, clearing_radius_;
       ros::Publisher current_goal_pub_, vel_pub_, action_goal_pub_;
-      ros::Subscriber goal_sub_;
+      ros::Subscriber goal_sub_, point_goal_sub_;
       ros::ServiceServer make_plan_srv_, clear_costmaps_srv_;
       bool shutdown_costmaps_, clearing_rotation_allowed_, recovery_behavior_enabled_;
       bool make_plan_clear_costmap_, make_plan_add_unreachable_goal_;

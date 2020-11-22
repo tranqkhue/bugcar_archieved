@@ -1,0 +1,442 @@
+<?xml version='1.0' encoding='ASCII'?>
+<sdf version="1.4">
+  <world name="default">
+    <model name="ground">
+      <pose/>
+      <link name="body">
+          <collision name="geom">
+              <geometry>
+                  <plane>
+                      <normal>0 0 1</normal>
+                      <size>99.114900331 714.079784269</size>
+                  </plane>
+              </geometry>
+              <surface>
+                  <friction>
+                    <ode>
+                      <mu>100</mu>
+                      <mu2>50</mu2>
+                    </ode>
+                  </friction>
+              </surface>
+          </collision>
+          <visual name="visual">
+            <cast_shadows>false</cast_shadows>
+              <geometry>
+                <plane>
+                   <normal>0 0 1</normal>
+                   <size>99.114900331 714.079784269</size>
+                </plane>
+              </geometry>
+              <material>
+                <script>
+                  <uri>file://media/materials/scripts/gazebo.material</uri>
+                  <name>Gazebo/Yellow</name>
+                </script>
+              </material>
+          </visual>
+      </link>
+      <static>true</static>
+    </model>
+    <spherical_coordinates>
+      <surface_model>EARTH_WGS84</surface_model>
+      <latitude_deg>11.0531799326</latitude_deg>
+      <longitude_deg>106.673321124</longitude_deg>
+      <elevation>0</elevation>
+      <heading_deg>0</heading_deg>
+    </spherical_coordinates>
+    <include>
+      <uri>model://robocup14_spl_goal</uri>
+      <name>robocup14_spl_goal_0</name>
+      <static>true</static>
+      <pose>21.9988040092 -31.8972937765 0.0 0 0 0</pose>
+    </include>
+    <model name="office_building_602270477">
+      <static>true</static>
+      <pose>0.635913883664 -21.5998028383 0.0 0 0 0</pose>
+      <link name="office_building_602270477_0">
+        <collision name="office_building_602270477_0">
+          <geometry>
+            <box>
+              <size>9.60905539337 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270477_0">
+          <geometry>
+            <box>
+              <size>9.60905539337 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>6.81291829833 -0.442998552524 0 0 0 1.64609633675</pose>
+      </link>
+      <link name="office_building_602270477_1">
+        <collision name="office_building_602270477_1">
+          <geometry>
+            <box>
+              <size>16.8951800769 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270477_1">
+          <geometry>
+            <box>
+              <size>16.8951800769 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-1.24865061714 -5.8778929042 0 0 0 0.0763065736783</pose>
+      </link>
+      <link name="office_building_602270477_2">
+        <collision name="office_building_602270477_2">
+          <geometry>
+            <box>
+              <size>9.60990310269 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270477_2">
+          <geometry>
+            <box>
+              <size>9.60990310269 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-10.0386578516 -1.73095870906 0 0 0 -1.49434250681</pose>
+      </link>
+      <link name="office_building_602270477_3">
+        <collision name="office_building_602270477_3">
+          <geometry>
+            <box>
+              <size>16.9062672462 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270477_3">
+          <geometry>
+            <box>
+              <size>16.9062672462 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-1.97708893616 3.70393564261 0 0 0 -3.0653365034</pose>
+      </link>
+    </model>
+    <model name="office_building_602270479">
+      <static>true</static>
+      <pose>12.7083766877 -84.5787619906 0.0 0 0 0</pose>
+      <link name="office_building_602270479_0">
+        <collision name="office_building_602270479_0">
+          <geometry>
+            <box>
+              <size>27.0700180258 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270479_0">
+          <geometry>
+            <box>
+              <size>27.0700180258 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-10.9803852163 50.7932331026 0 0 0 -3.03251431329</pose>
+      </link>
+      <link name="office_building_602270479_1">
+        <collision name="office_building_602270479_1">
+          <geometry>
+            <box>
+              <size>71.9525233368 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270479_1">
+          <geometry>
+            <box>
+              <size>71.9525233368 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>6.38871078928 16.5040231021 0 0 0 1.67982080604</pose>
+      </link>
+      <link name="office_building_602270479_2">
+        <collision name="office_building_602270479_2">
+          <geometry>
+            <box>
+              <size>12.0913005466 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270479_2">
+          <geometry>
+            <box>
+              <size>12.0913005466 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>16.313314867 -18.6037578423 0 0 0 -3.03305727362</pose>
+      </link>
+      <link name="office_building_602270479_3">
+        <collision name="office_building_602270479_3">
+          <geometry>
+            <box>
+              <size>36.9863981373 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270479_3">
+          <geometry>
+            <box>
+              <size>36.9863981373 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>24.3362889678 -36.3322038683 0 0 0 1.6798576876</pose>
+      </link>
+      <link name="office_building_602270479_4">
+        <collision name="office_building_602270479_4">
+          <geometry>
+            <box>
+              <size>39.1625047953 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270479_4">
+          <geometry>
+            <box>
+              <size>39.1625047953 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>6.88454719662 -56.849366619 0 0 0 0.109190324866</pose>
+      </link>
+      <link name="office_building_602270479_5">
+        <collision name="office_building_602270479_5">
+          <geometry>
+            <box>
+              <size>108.949872205 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270479_5">
+          <geometry>
+            <box>
+              <size>108.949872205 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-18.5075229097 -4.83171059244 0 0 0 -1.46177022344</pose>
+      </link>
+    </model>
+    <model name="office_building_602270478">
+      <static>true</static>
+      <pose>-33.908772517 -123.951353626 0.0 0 0 0</pose>
+      <link name="office_building_602270478_0">
+        <collision name="office_building_602270478_0">
+          <geometry>
+            <box>
+              <size>36.427009519 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270478_0">
+          <geometry>
+            <box>
+              <size>36.427009519 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>19.0366015827 -2.04049518141 0 0 0 1.65516124587</pose>
+      </link>
+      <link name="office_building_602270478_1">
+        <collision name="office_building_602270478_1">
+          <geometry>
+            <box>
+              <size>46.9923862558 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270478_1">
+          <geometry>
+            <box>
+              <size>46.9923862558 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-2.84070085426 -22.1757971815 0 0 0 0.0846498852545</pose>
+      </link>
+      <link name="office_building_602270478_2">
+        <collision name="office_building_602270478_2">
+          <geometry>
+            <box>
+              <size>36.4270614406 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270478_2">
+          <geometry>
+            <box>
+              <size>36.4270614406 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-27.7875229989 -6.01362044526 0 0 0 -1.48643140662</pose>
+      </link>
+      <link name="office_building_602270478_3">
+        <collision name="office_building_602270478_3">
+          <geometry>
+            <box>
+              <size>46.992386281 0.2 10</size>
+            </box>
+          </geometry>
+        </collision>
+        <visual name="office_building_602270478_3">
+          <geometry>
+            <box>
+              <size>46.992386281 0.2 10</size>
+            </box>
+          </geometry>
+          <material>
+            <script>
+              <uri>file://media/materials/scripts/gazebo.material</uri>
+              <name>Gazebo/Red</name>
+            </script>
+          </material>
+        </visual>
+        <pose>-5.91022056201 14.1216815548 0 0 0 -3.05694387323</pose>
+      </link>
+    </model>
+    <road name="residential_225069784">
+      <width>3</width>
+      <point>70.4381094817 -220.564638529 0.1</point>
+      <point>66.2786390276 -174.685486898 0.1</point>
+      <point>63.9987414651 -149.45413104 0.1</point>
+      <point>60.0729163914 -106.117741412 0.1</point>
+      <point>58.1155855627 -84.4768256954 0.1</point>
+      <point>43.471213713 -84.4770239314 0.1</point>
+      <point>35.8654019237 -78.6167161013 0.1</point>
+      <point>26.7575966972 -1.32923851985 0.1</point>
+    </road>
+    <road name="residential_225069769">
+      <width>3</width>
+      <point>6.67561010078 15.7170396092 0.1</point>
+      <point>-102.082947288 -84.337121425 0.1</point>
+    </road>
+    <road name="residential_225069779">
+      <width>3</width>
+      <point>-11.5387292104 80.1159818113 0.1</point>
+      <point>-160.84045749 118.082111084 0.1</point>
+      <point>-187.038040374 126.157773214 0.1</point>
+      <point>-194.343561513 128.209425424 0.1</point>
+    </road>
+    <road name="residential_225069764">
+      <width>3</width>
+      <point>144.51230991 70.9611274688 0.1</point>
+      <point>138.763364395 90.7794614245 0.1</point>
+      <point>133.904013984 107.487544558 0.1</point>
+      <point>111.64261066 132.09667706 0.1</point>
+      <point>81.1862307182 145.476082727 0.1</point>
+      <point>53.6321228746 146.250743737 0.1</point>
+      <point>37.2086599894 141.994473514 0.1</point>
+      <point>7.44191503995 122.143073327 0.1</point>
+      <point>-9.49286159267 94.5105849855 0.1</point>
+      <point>-11.5387292104 80.1159818113 0.1</point>
+      <point>-13.9959863372 62.8948392368 0.1</point>
+      <point>-7.55754736305 36.0919400262 0.1</point>
+      <point>0.404151622489 21.9484417621 0.1</point>
+      <point>6.67561010078 15.7170396092 0.1</point>
+      <point>19.9746639515 2.53397639379 0.1</point>
+      <point>26.7575966972 -1.32923851985 0.1</point>
+      <point>32.1394651075 -4.40671389645 0.1</point>
+      <point>62.4068043967 -11.5763724391 0.1</point>
+      <point>69.3787152155 -10.5941029008 0.1</point>
+      <point>84.5456794227 -8.47676621632 0.1</point>
+      <point>89.7051159583 -7.75643563452 0.1</point>
+      <point>102.714860848 -2.21237470662 0.1</point>
+      <point>116.302753899 9.50856763055 0.1</point>
+      <point>122.651938567 13.8193542807 0.1</point>
+      <point>128.901025088 20.3782595897 0.1</point>
+      <point>141.254536401 45.0204072187 0.1</point>
+      <point>144.51230991 70.9611274688 0.1</point>
+    </road>
+  </world>
+</sdf>

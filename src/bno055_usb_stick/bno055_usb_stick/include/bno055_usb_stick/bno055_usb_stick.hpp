@@ -37,7 +37,7 @@ public:
 public:
   BNO055USBStick(boost::asio::io_service &asio_service, const Callback &callback,
                  const std::string &ns = "~")
-      : port_(ros::param::param< std::string >(ros::names::append(ns, "port"), "/dev/ttyACM0")),
+      : port_(ros::param::param< std::string >(ros::names::append(ns, "port"), "/dev/ttyACM2")),
         timeout_(ros::param::param(ros::names::append(ns, "timeout"), 1.)),
         mode_(ros::param::param< std::string >(ros::names::append(ns, "mode"), "ndof")),
         serial_(asio_service), timer_(asio_service), callback_(callback), decoder_(ns) {

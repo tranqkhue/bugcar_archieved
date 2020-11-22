@@ -1,3 +1,6 @@
+#ifndef GOOGLE_PLANNER_CPP
+#define GOOGLE_PLANNER_CPP
+
 #include <ros/ros.h>
 #include <costmap_2d/costmap_2d_ros.h>
 #include <costmap_2d/costmap_2d.h>
@@ -8,18 +11,20 @@
 #include <tf2/LinearMath/Quaternion.h>
 #include <bugcar_google_map_global_planner/GetPathLL.h>
 #include <bugcar_google_map_global_planner/GetPathMap.h>
+#include <tf2_ros/transform_listener.h>
 #include <cmath>
 #include <time.h>
 
-using std::string;
 
-#ifndef GOOGLE_PLANNER_CPP
-#define GOOGLE_PLANNER_CPP
 
 namespace google_planner {
+    static const int RUNNING_PLAN = 1;
+    static const int INTERPOLATING_PLAN = 2;
+    static const int REQUESTING_PLAN = 3;
     class GooglePlanner : public nav_core::BaseGlobalPlanner {
         public:
             GooglePlanner();
+            ~GooglePlanner();
             GooglePlanner(std::string name, costmap_2d::Costmap2DROS* costmap_ros);
 
             void initialize(std::string name, costmap_2d::Costmap2DROS* costmap_ros);
@@ -27,33 +32,43 @@ namespace google_planner {
             bool makePlan(const geometry_msgs::PoseStamped& start,
                           const geometry_msgs::PoseStamped& goal,
                           std::vector<geometry_msgs::PoseStamped>& plan);
-            bool makePlan(const geometry_msgs::PoseStamped& start,
-                          const geometry_msgs::PoseStamped& goal,
-                          std::vector<geometry_msgs::PoseStamped>& google_plan,
-                          std::vector<geometry_msgs::PoseStamped>& plan);
+            
             float calculate_distance(const geometry_msgs::PoseStamped& x1,
                                      const geometry_msgs::PoseStamped& x2);
-            float calculate_orientation(const geometry_msgs::PoseStamped& x1,
-                                        const geometry_msgs::PoseStamped& x2);
-            void preProcessPlan(const geometry_msgs::PoseStamped& start,
-                                const geometry_msgs::PoseStamped& goal,
-                                int plan_size_);
-            void populatePlan();
+        
+            void interpolatePlan();
             void getHeadingRad();
+            void mb_status_callback(const actionlib_msgs::GoalStatusArray::ConstPtr mb_status);
 
-            std::string topic_name = "GoogleMapGlobalPlanner/plan";
             nav_msgs::Path global_plan_pub;
             int plan_size = 0;
-            std::vector<geometry_msgs::PoseStamped> pose_google;
+            std::string name_;
+            std::string python_service;
+            std::string api_key;
+
+            std::string global_frame_;
+            geometry_msgs::PoseStamped previous_goal;
+            tf2_ros::Buffer tfBuffer;
+            tf2_ros::TransformListener tf_listener{tfBuffer};
+
+            std::vector<geometry_msgs::PoseStamped> interpolated_poses;
+            std::vector<geometry_msgs::PoseStamped> google_poses;
             ros::ServiceClient client_google;
-            ros::Subscriber sub_move_base_stt;
+            ros::Subscriber move_base_status_sub;
             ros::Publisher pub_visualization;
+
             bugcar_google_map_global_planner::GetPathMap srv_path_map;
             bool car_busy = false;
             bool exec_plan_ = false;
             bool got_plan_ = false;
             int count = 0;
-            float point_sep = 2.0;
+            int status = 0;
+
+            float interpolate_distance = 2.0;
+            bool ignore_heading;
+            bool publish_plan;
+            bool fail_terminate;
+
             std::vector<float> rad_heading;
 
     };

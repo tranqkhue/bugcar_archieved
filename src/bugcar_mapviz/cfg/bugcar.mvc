@@ -9,9 +9,9 @@ show_status_bar: true
 show_capture_tools: true
 window_width: 1389
 window_height: 759
-view_scale: 0.1781526
-offset_x: -2.413319
-offset_y: -10.29992
+view_scale: 0.3572389
+offset_x: -38.65862
+offset_y: -19.3991
 use_latest_transforms: true
 background: "#babdb6"
 displays:
@@ -32,21 +32,22 @@ displays:
     config:
       visible: true
       collapsed: false
-      topic: /odom/filtered_map_baselink
+      topic: /odometry/filtered_map_baselink
       color: "#fce94f"
       draw_style: arrows
       position_tolerance: 4
       buffer_size: 1
       show_laps: false
       show_covariance: true
+      show_all_covariances: false
       static_arrow_sizes: false
-      arrow_size: 117
+      arrow_size: 267
       show_timestamps: 0
   - type: mapviz_plugins/navsat
     name: new display
     config:
       visible: true
-      collapsed: false
+      collapsed: true
       topic: /gps/filtered
       color: "#cc0000"
       draw_style: points
@@ -59,7 +60,7 @@ displays:
       collapsed: false
       frame: origin
       color: "#00ff00"
-      draw_style: points
+      draw_style: arrows
       position_tolerance: 1
       buffer_size: 0
       static_arrow_sizes: false
@@ -71,8 +72,42 @@ displays:
       collapsed: false
       frame: odom
       color: "#3465a4"
-      draw_style: lines
+      draw_style: arrows
       position_tolerance: 1
-      buffer_size: 1
+      buffer_size: 4
       static_arrow_sizes: false
-      arrow_size: 167
+      arrow_size: 500
+  - type: mapviz_plugins/path
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /move_base/Planner/shortest_path
+      color: "#05f3fe"
+  - type: mapviz_plugins/marker
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /move_base/TebLocalPlannerROS/teb_markers
+  - type: mapviz_plugins/path
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      topic: /move_base/TebLocalPlannerROS/local_plan
+      color: "#ff55ff"
+  - type: mapviz_plugins/occupancy_grid
+    name: new display
+    config:
+      visible: true
+      collapsed: false
+      alpha: 1
+      topic: /move_base/local_costmap/costmap
+      update: true
+      scheme: costmap
+  - type: mapviz_plugins/move_base
+    name: new display
+    config:
+      visible: true
+      collapsed: false
