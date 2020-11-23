@@ -1,0 +1,6 @@
+analyzers:
+  odometry:
+    type: diagnostic_aggregator/GenericAnalyzer
+    path: Odometry
+    timeout: 5.0
+    contains: 'odometry'
