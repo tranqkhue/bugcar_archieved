@@ -23,7 +23,10 @@ map_img = np.zeros([int(MAP_SIZE/MAP_RESOLUTION),int(MAP_SIZE/MAP_RESOLUTION),1]
 occupancy_grid = map_img.flatten()
 occupancy_grid = occupancy_grid.tolist()
 for i in range(len(occupancy_grid)):
-    occupancy_grid[i] = 0
+    if i < 2500 or i > 7500:
+    	occupancy_grid[i] = 100
+    else:
+        occupancy_grid[i] = 0
 
 map_msg = OccupancyGrid()
 

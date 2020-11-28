@@ -1,3 +1,0 @@
-move_base_msgs/MoveBaseActionGoal map_goal
----
-nav_msgs/Path goal_path

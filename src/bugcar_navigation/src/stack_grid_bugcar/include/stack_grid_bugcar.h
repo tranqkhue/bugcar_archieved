@@ -16,6 +16,9 @@
 #include <cmath>
 #include <algorithm>
 #include <memory>
+#include <future>
+#include <thread>
+#include <mutex>
 #include <eigen3/Eigen/Dense>
 #include <opencv2/opencv.hpp>
 
@@ -44,7 +47,7 @@ namespace stack_grid_bugcar{
             void reconfigureCB(costmap_2d::GenericPluginConfig &config, uint32_t level);
 
             void publishCostmap(costmap_2d::Costmap2D cost_map_);    
-            void processMapCV(int index);
+            void processMap(int index);
 
             uint8_t updateCharMap(const int8_t img_cell, uint8_t self_cell);   
             uint8_t translateOccupancyToCost(int8_t occupancyValue);
@@ -63,20 +66,19 @@ namespace stack_grid_bugcar{
 
             geometry_msgs::PoseStamped costmap_stamped_origin;
 
-            std::vector<boost::shared_ptr<SimpleLayerObj>> static_layers_handler;
-            
-            std::vector<boost::shared_ptr<boost::thread>> process_map;
-            std::vector<boost::shared_ptr<cv::Mat>> layer_mat;
-            std::vector<bool> process_check;
-
-            boost::atomic<bool> update{false};
-
-            boost::mutex data_mutex;
+            std::vector<std::shared_ptr<SimpleLayerObj>> static_layers_handler;
+            std::vector<std::shared_ptr<std::future<void>>> async_map_process;
+            std::vector<std::shared_ptr<cv::Mat>> layer_mat;
+   
+            std::mutex data_mutex;
             
             cv::Mat main_map_img;
             cv::Mat inflation_mask;
-            cv::Mat obstacle_mat;
+            cv::Mat obstacle_mask;
+            cv::Mat dilation_mask;
             cv::Mat obstacle_bounding;
+            cv::Mat gaussian_kernel;
+            cv::Mat dilation_kernel;
 
             tf2_ros::Buffer tfBuffer;
             tf2_ros::TransformListener tf_listener{tfBuffer};
@@ -85,6 +87,7 @@ namespace stack_grid_bugcar{
             double max_delay_time;
             double inflation_rad_;
             bool track_unknown_;
+
             
             
             std::string global_frame_;            
