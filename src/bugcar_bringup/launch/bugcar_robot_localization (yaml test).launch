@@ -1,0 +1,44 @@
+<!--
+   This .launch file is used to launch robot_localization node. More params can be found in the following .yaml file
+-->
+
+<launch>
+    <arg name="yaml_file"            default="$(find bugcar_bringup)/cfg/dual_ekf_navsat.yaml" />    
+    <arg name="raw_imu"              default="imu/data" />
+    <arg name="raw_gps"              default="gps/fix" />
+    <arg name="raw_odom"             default="odom/wheel" />
+    <arg name="odom_ekf_filtered"    default="odom/filtered_odom_baselink" />
+    <arg name="map_ekf_filtered"     default="odom/filtered_map_baselink" />
+    <arg name="navsat_filtered_odom" default="odom/transformed_gps" />
+    
+    <!-- EKF node for fusing imu and odom data to get tf between odom - base_link -->
+    <node name="odom_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+	<rosparam file="$(arg yaml_file)" command="load" ns="ekf_se_odom" />
+	<param name="imu0" value="$(arg raw_imut)" />
+	<param name="odom0" value="$(arg raw_odom)"/>
+	<remap from="odometry/filtered" to="$(arg odom_ekf_filtered)" />
+    </node>
+
+    <!-- Convert gps data to odometry data in the respective world frame -->
+
+    <node pkg="robot_localization" type="navsat_transform_node" name="navsat_transform" clear_params="true">
+	<rosparam file="$(arg yaml_file)" command="load" ns="navsat_transform" />
+	<remap from="odometry/filtered" to="$(arg map_ekf_filtered)"/>
+    	<remap from="imu/data" to="$(arg raw_imu)"/>
+    	<remap from="gps/fix" to="$(arg raw_odom)"/>
+    	<remap from="odometry/gps" to="$(arg navsat_filtered_odom)"/>
+     </node>
+
+    <!-- EKF node for fusing imu and odom data to get tf between map - base_link -->
+
+    <node name="map_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
+	<rosparam file="$(arg yaml_file)" command="load" ns="ekf_se_map" />
+	<param name="odom0" value="$(arg odom_ekf_filtered)"/>
+ 	<param name="odom1" value="$(arg navsat_filtered_odom)"/>
+  	<param name="imu0" value="$(arg raw_imu)"/>
+	<remap from="odometry/filtered" to="$(arg map_ekf_filtered)"/>
+    </node>
+
+<!-- ========================================================================================================================================== -->
+
+</launch>

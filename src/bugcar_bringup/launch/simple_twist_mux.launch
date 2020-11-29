@@ -1,0 +1,12 @@
+<launch>
+
+    <arg name="config_locks"  default="$(find bugcar_bringup)/cfg/twist_mux_locks.yaml"/>
+    <arg name="config_topics" default="$(find bugcar_bringup)/cfg/twist_mux_topics.yaml"/>
+
+    <node pkg="twist_mux" type="twist_mux" name="twist_mux" output="screen">
+	<rosparam file="$(arg config_locks)"  command="load"/>	
+	<remap from="cmd_vel_out" to="cmd_vel"/>
+    </node>
+
+</launch>
+

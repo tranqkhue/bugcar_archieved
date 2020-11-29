@@ -1,7 +1,7 @@
 *~
 *.project
 *.cproject
-~/.vscode/
+src/**/.vscode/
 build/
 devel/
 install/

@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+
+    This .launch file is used to initialize the ublox gps whose data is used in localization operation
+
+-->
+
+<launch>
+    <arg name="node_name" default="gps" />  
+    <arg name="baud"      default="115200" />
+    <arg name="port"      default="/dev/ttyUSB_gps"/>
+
+    <node pkg="ublox_gps" type="ublox_gps" name="$(arg node_name)" output="$(arg output)" clear_params="true" respawn="true" respawn_delay="30">
+	<rosparam command="load" file="$(find bugcar_bringup)/cfg/single_gps_config.yaml" ns="$(arg node_name)"/>
+	<param name="uart1/baudrate" value="$(arg baud)" />
+	<param name="device" value="$(arg port)" />
+      
+    </node>
+
+</launch>

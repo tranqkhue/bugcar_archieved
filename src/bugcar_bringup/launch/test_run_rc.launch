@@ -1,17 +1,50 @@
+<!--
+
+   This .launch file is used to launch basic localization operation. Also included TX node to control system with RC controller, and twist_mux pkg to override auto planning/navigation with manual control
+
+-->
 <launch>
-	<include file="$(find robot_localization)/launch/bugcar_robot_localization.launch" />
-	<include file="$(find twist_mux)/launch/simple_twist_mux.launch"/>
-	<include file="$(find ublox_gps)/launch/single_gps.launch" />
-	<include file="$(find roboclaw_node)/launch/roboclaw.launch">
-	    <arg name="dev" value="/dev/ttyUSB_roboclaw"/>
-	    <arg name="baud" value="115200"/>
-	    <arg name="ticks_per_meter" value="1833.5"/>
-	</include>
-	
-	<node pkg="rosserial_python" type="serial_node.py" name="rc_node" output="screen" args="-port /dev/ttyUSB_arduino -baud 115200"/>
-	<node pkg="bno055_usb_stick" type="bno055_usb_stick_node" name="bno055_node">
-	    <param name="port" value="/dev/ttyUSB_BNOimu" />
-            <param name="publish_tf" value="false" />
-	    <param name="topic" value="/imu/data"/>
-	</node>	
+
+    <!-- BASIC DEFAULT PARAMS -->
+    <!-- More params will be found in individual included .launch file and their respective .yaml file(s) located at bugcar_bringup/launch and bugcar_bringup/cfg -->
+    <arg name="BNO_port" default="/dev/ttyUSB_BNOimu" />
+    <arg name="ROBOCLAW_port" default="/dev/ttyUSB_roboclaw" />
+    <arg name="RX_port" default="/dev/ttyUSB_arduino" />
+    <arg name="GPS_port" default="/dev/ttyUSB_gps"/>
+
+    <arg name="default_baud" default="115200" />
+    <arg name="GPS_baud" default="9600" />
+    <arg name="ROBOCLAW_baud" default="$(arg default_baud)" />
+    
+    <!-- ROBOT_LOCALIZATION -->
+    <include file="$(find bugcar_bringup)/launch/bugcar_robot_localization (ymal test).launch" />
+
+    <!-- UBLOX_GPS -->
+    <include file="$(find bugcar_bringup)/launch/single_gps.launch" >
+	<arg name="baud" value="$(arg GPS_baud)" />
+	<ard name="port" value="$(arg GPS_port)" />
+    </include>
+
+    <!-- ROBOCLAW_MOTOR_DRIVER -->
+    <include file="$(find bugcar_bringup)/launch/roboclaw.launch">
+	<arg name="port" value="$(arg ROBOCLAW_port)"/>
+	<arg name="baud" value="$(arg ROBOCLAW_baud)"/>
+	<arg name="ticks_per_meter" value="1833.5"/>
+    </include>
+
+    <!-- BNO055 -->
+    <node pkg="bno055_usb_stick" type="bno055_usb_stick_node" name="bno055_node">
+	<param name="port" value="$(arg BNO_port)" />
+	<param name="topic" value="/imu/data"/>
+	<!-- VERY IMPORTANT PARAMS 
+	Do not change without consulting the owner(s) of this repo -->
+	<param name="publish_tf" value="false" />
+    </node>	
+
+    <!-- TWIST_MUX -->
+    <include file="$(find bugcar_bringup)/launch/simple_twist_mux.launch"/>
+
+    <!-- RX rc controller -->
+    <node pkg="rosserial_python" type="serial_node.py" name="rc_node" output="screen" args="-port $(arg RX_port) -baud $(arg default_baud)"/>
+ 
 </launch>

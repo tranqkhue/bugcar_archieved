@@ -1,6 +1,0 @@
-<launch>
-	 <include file="$(find bugcar_bringup)/launch/simulation.launch" />
-	 <include file="$(find robot_localization)/launch/bugcar_robot_localization.launch" />
-	 <include file="$(find bugcar_bringup)/launch/teb_move_base.launch" />
-
-</launch>
