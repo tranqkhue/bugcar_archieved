@@ -20,7 +20,4 @@
 		<remap from="cmd_vel" to="move_base/cmd_vel" />
 
 	</node>
-
-	<node pkg="bugcar_google_map_global_planner" type="google_map_global_planner.py" name="google_map_global_planner"/>
-
 </launch>

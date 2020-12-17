@@ -17,7 +17,9 @@
     <arg name="ROBOCLAW_baud" default="$(arg default_baud)" />
     
     <!-- ROBOT_LOCALIZATION -->
-    <include file="$(find bugcar_bringup)/launch/bugcar_robot_localization (ymal test).launch" />
+    <include file="$(find bugcar_bringup)/launch/bugcar_robot_localization.launch" />
+
+    <node pkg="robot_localization" type="wait_for_gps.py" name="wait_for_gps_node"/>
 
     <!-- UBLOX_GPS -->
     <include file="$(find bugcar_bringup)/launch/single_gps.launch" >

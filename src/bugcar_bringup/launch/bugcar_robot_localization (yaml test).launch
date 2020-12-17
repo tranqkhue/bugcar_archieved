@@ -14,7 +14,7 @@
     <!-- EKF node for fusing imu and odom data to get tf between odom - base_link -->
     <node name="odom_ekf" pkg="robot_localization" type="ekf_localization_node" clear_params="true">
 	<rosparam file="$(arg yaml_file)" command="load" ns="ekf_se_odom" />
-	<param name="imu0" value="$(arg raw_imut)" />
+	<param name="imu0" value="$(arg raw_imu)" />
 	<param name="odom0" value="$(arg raw_odom)"/>
 	<remap from="odometry/filtered" to="$(arg odom_ekf_filtered)" />
     </node>
@@ -25,7 +25,7 @@
 	<rosparam file="$(arg yaml_file)" command="load" ns="navsat_transform" />
 	<remap from="odometry/filtered" to="$(arg map_ekf_filtered)"/>
     	<remap from="imu/data" to="$(arg raw_imu)"/>
-    	<remap from="gps/fix" to="$(arg raw_odom)"/>
+    	<remap from="gps/fix" to="$(arg raw_gps)"/>
     	<remap from="odometry/gps" to="$(arg navsat_filtered_odom)"/>
      </node>
 

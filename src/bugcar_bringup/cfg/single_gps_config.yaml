@@ -1,30 +1,40 @@
-gps:
-    debug: 2                    # Range 0-4 (0 means no debug statements will print)
 
-    device: /dev/ttyUSB_gps
-    frame_id: base_link
-    velocity_frame_id: map
-    dynamic_model: pedestrian   # Velocity restricted to 0 m/s. Zero dynamics 
-                              # assumed.
-    fix_mode: auto
+debug: 2                    # Range 0-4 (0 means no debug statements will print)
 
-    rate: 5                # Measurement rate in Hz
-    nav_rate: 5                # in number of measurement cycles
+save_on_shut_down: true     # save BBR data to flash memory
 
-    uart1:
-      baudrate: 9600           # C94-M8P specific
-      in: 0                     # No UART in for base
-      out: 0                   # RTCM 3
+device: /dev/ttyUSB_gps
+frame_id: base_link
+velocity_frame_id: map
+dynamic_model: pedestrian   # Low acceleration & speed is assumed 
+                            # Please refer to ublox documentation for m 
 
-    gnss:
-      glonass: false             # Supported by C94-M8P
-      beidou: true            # Supported by C94-M8P
-      qzss: false               # Supported by C94-M8P
+fix_mode: auto
+enable_ppp: true          # Enable Pin-Point-Precision
 
-    inf: 
-      all: true               # Whether to display all INF messages in console
+rate: 5               # Measurement rate in Hz
+nav_rate: 5          # Publish rate in Hz
 
-    # Enable u-blox message publishers
-    publish:
-      tim:
-        tm2: true 
+uart1:
+  baudrate: 9600           # C94-M8P specific
+  in: 0                     # No UART in for base
+  out: 0                   # RTCM 3
+
+gnss:
+  # There are only 32 tracking channel on the running module
+  # It is required that for each GNSS, at least 4 channels must be reserved
+
+  gps:     true            # Default to true
+  glonass: true             # Supported by C94-M8P
+  beidou:  false            # Supported by C94-M8P
+  qzss:    true              # Supported by C94-M8P
+
+nmea:
+  bds_talker_id: BD
+inf: 
+  all: true               # Whether to display all INF messages in console
+
+# Enable u-blox message publishers
+publish:
+  tim:
+    tm2: true 

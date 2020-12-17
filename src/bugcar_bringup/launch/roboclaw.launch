@@ -11,11 +11,11 @@
     
     <!-- VERY IMPORTANT PARAMS 
     Do not change without consulting the owner(s) of this repo -->
-    <arg name="max_speed" default="1.0"/>
-    <arg name="ticks_per_meter" default="1833.5"/>
-    <arg name="base_width" default="0.245"/>
+    <arg name="max_speed" default="4"/>
+    <arg name="ticks_per_meter" default="2000"/>
+    <arg name="base_width" default="0.450"/>
 
-    <node pkg="roboclaw_node" type="roboclaw_node.py" name="roboclaw_node">
+    <node pkg="roboclaw_node" type="roboclaw_node.py" name="roboclaw_node" output="screen">
         <param name="~dev" value="$(arg port)"/>
         <param name="~baud" value="$(arg baud)"/>
         <param name="~address" value="$(arg address)"/>

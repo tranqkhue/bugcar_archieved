@@ -9,11 +9,16 @@
     <arg name="node_name" default="gps" />  
     <arg name="baud"      default="115200" />
     <arg name="port"      default="/dev/ttyUSB_gps"/>
+    <arg name="output"    default="screen"/>
+    <arg name="cold_start" default="false"/>
+    <arg name="reconfigure" default="false"/>
 
-    <node pkg="ublox_gps" type="ublox_gps" name="$(arg node_name)" output="$(arg output)" clear_params="true" respawn="true" respawn_delay="30">
-	<rosparam command="load" file="$(find bugcar_bringup)/cfg/single_gps_config.yaml" ns="$(arg node_name)"/>
+    <node pkg="ublox_gps" type="ublox_gps" name="$(arg node_name)" output="$(arg output)" respawn="true" respawn_delay="30">
+	<rosparam command="load" file="$(find bugcar_bringup)/cfg/single_gps_config.yaml"/>
 	<param name="uart1/baudrate" value="$(arg baud)" />
 	<param name="device" value="$(arg port)" />
+	<param name="config_on_startup" value="$(arg reconfigure)" />
+	<param name="cold_start" value="$(arg cold_start)" />
       
     </node>
 

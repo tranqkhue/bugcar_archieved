@@ -32,16 +32,16 @@ displays:
     config:
       visible: true
       collapsed: false
-      topic: /odometry/filtered_map_baselink
+      topic: /odom/filtered_map_baselink
       color: "#fce94f"
       draw_style: arrows
       position_tolerance: 4
-      buffer_size: 1
+      buffer_size: 0
       show_laps: false
       show_covariance: true
       show_all_covariances: false
       static_arrow_sizes: false
-      arrow_size: 267
+      arrow_size: 286
       show_timestamps: 0
   - type: mapviz_plugins/navsat
     name: new display
@@ -72,7 +72,7 @@ displays:
       collapsed: false
       frame: odom
       color: "#3465a4"
-      draw_style: arrows
+      draw_style: points
       position_tolerance: 1
       buffer_size: 4
       static_arrow_sizes: false
